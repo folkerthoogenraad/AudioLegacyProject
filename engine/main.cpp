@@ -3,7 +3,7 @@
 int main() {
 	using namespace apryx;
 
-	Win32Window window("OpenGL?");
+	Win32Window window("OpenGL");
 
 	window.setVisible(true);
 
