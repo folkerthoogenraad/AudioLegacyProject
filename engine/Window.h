@@ -16,6 +16,8 @@ namespace apryx {
 		void poll() = delete;
 		void swap() = delete;
 
+		bool isCloseRequested() const = delete;
+
 		int getWidth() const { return m_Width; }
 		int getHeight() const { return m_Height; }
 	};

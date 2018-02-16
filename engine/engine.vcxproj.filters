@@ -8,12 +8,26 @@
     <ClCompile Include="Window.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="GL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GL.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
       <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>

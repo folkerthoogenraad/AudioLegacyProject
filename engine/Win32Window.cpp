@@ -1,5 +1,7 @@
 #include "Win32Window.h"
 
+#include "GL.h"
+
 #define CLASS_NAME "Win32WindowOpenGL"
 
 #include <iostream>
@@ -8,6 +10,12 @@ namespace apryx {
 
 	static LRESULT CALLBACK DefaultWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		switch (uMsg) {
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+		}
+
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
@@ -48,6 +56,14 @@ namespace apryx {
 
 		RegisterClass(&wc);
 
+	}
+
+	static void initGL()
+	{
+		glewInit();
+
+		glClearColor(0, 0, 1, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	Win32Window::Win32Window(std::string title, int width, int height, bool full)
@@ -118,11 +134,18 @@ namespace apryx {
 		}
 
 		ReleaseDC(m_Hwnd, deviceContext);
+
+		initGL();
 	}
 
 	void Win32Window::setVisible(bool visible)
 	{
 		ShowWindow(m_Hwnd, visible ? SW_SHOW : SW_HIDE);
+	}
+
+	bool Win32Window::isCloseRequested() const
+	{
+		return m_CloseRequested;
 	}
 
 	void Win32Window::destroy()
@@ -136,14 +159,8 @@ namespace apryx {
 		MSG msg = {};
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (msg.message == WM_CREATE) {
-				std::cout << "Boem bats lekker luchtdicht" << std::endl;
-			}
-			if (msg.message == WM_KEYDOWN) {
-				std::cout << "Je moeder" << std::endl;
-			}
-			if (msg.message == WM_CHAR) {
-				std::cout << "char bitch" << std::endl;
+			if (msg.message == WM_QUIT) {
+				m_CloseRequested = true;
 			}
 
 			TranslateMessage(&msg);
