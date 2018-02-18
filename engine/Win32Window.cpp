@@ -71,6 +71,10 @@ namespace apryx {
 	{
 		registerClass();
 
+		// Make sure its the client size
+		RECT wr = { 0, 0, m_Width, m_Height};    // set the size, but not the position
+		AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
+
 		m_Hwnd = CreateWindowEx(
 			0,                              // Optional window styles.
 			CLASS_NAME,                     // Window class
@@ -78,7 +82,7 @@ namespace apryx {
 			WS_OVERLAPPEDWINDOW,            // Window style
 
 											// Size and position
-			0, 0, m_Width, m_Height,
+			0, 0, wr.right - wr.left, wr.bottom - wr.top,
 
 			NULL,       // Parent window    
 			NULL,       // Menu

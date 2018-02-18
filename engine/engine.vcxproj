@@ -143,6 +143,7 @@
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="GLShaderProgram.cpp" />
     <ClCompile Include="GLVertexBufferObject.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Win32Window.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="GLShaderProgram.h" />
     <ClInclude Include="GLVertexBufferObject.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Win32Window.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

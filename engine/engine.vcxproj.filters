@@ -20,6 +20,9 @@
     <ClCompile Include="GL.cpp">
       <Filter>opengl</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>time</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -40,6 +43,9 @@
     <ClInclude Include="GL.h">
       <Filter>opengl</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="win32">
@@ -50,6 +56,9 @@
     </Filter>
     <Filter Include="opengl">
       <UniqueIdentifier>{72311f19-f275-454e-9673-a8770656e38e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="time">
+      <UniqueIdentifier>{7a0f78d0-cd36-4067-94a2-4f2abb83cefe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

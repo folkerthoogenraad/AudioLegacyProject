@@ -18,9 +18,11 @@ namespace apryx {
 		glAttachShader(m_ID, vertexShader.getID());
 		glAttachShader(m_ID, fragmentShader.getID());
 
-		glBindFragDataLocation(m_ID, 0, "color");
+		glBindFragDataLocation(m_ID, 0, "outColor");
 
 		glBindAttribLocation(m_ID, SHADER_POSITION_LOCATION, SHADER_POSITION_NAME);
+		glBindAttribLocation(m_ID, SHADER_UV_LOCATION, SHADER_UV_NAME);
+		glBindAttribLocation(m_ID, SHADER_COLOR_LOCATION, SHADER_COLOR_NAME);
 
 		glLinkProgram(m_ID);
 
@@ -39,7 +41,7 @@ namespace apryx {
 
 	int GLShaderProgram::getAttribLocation(const char * name)
 	{
-		return glGetAttribLocation(m_ID, "position");;
+		return glGetAttribLocation(m_ID, name);
 	}
 	int GLShaderProgram::getUniformLocation(const char * name)
 	{
