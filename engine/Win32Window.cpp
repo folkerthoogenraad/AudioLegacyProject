@@ -10,10 +10,10 @@ namespace apryx {
 
 	static LRESULT CALLBACK DefaultWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		switch (uMsg) {
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			break;
+		Win32Window *p = ((Win32Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+		if (p) {
+			return p->handleWindowsMessage(uMsg, wParam, lParam);
 		}
 
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -143,9 +143,33 @@ namespace apryx {
 		ShowWindow(m_Hwnd, visible ? SW_SHOW : SW_HIDE);
 	}
 
+	bool Win32Window::isResized() const
+	{
+		return m_Resized;
+	}
+
 	bool Win32Window::isCloseRequested() const
 	{
 		return m_CloseRequested;
+	}
+
+	LRESULT Win32Window::handleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam)
+	{
+		if (message == WM_CLOSE) {
+			m_CloseRequested = true;
+		}
+
+		if (message == WM_SIZE) {
+			int width = LOWORD(lParam);  // Macro to get the low-order word. 
+			int height = HIWORD(lParam); // Macro to get the high-order word. 
+
+			m_Width = width;
+			m_Height = height;
+
+			m_Resized = true;
+		}
+
+		return DefWindowProc(m_Hwnd, message, wParam, lParam);
 	}
 
 	void Win32Window::destroy()
@@ -156,13 +180,13 @@ namespace apryx {
 
 	void Win32Window::poll()
 	{
+		m_CloseRequested = false;
+		m_Resized = false;
+
+
 		MSG msg = {};
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (msg.message == WM_QUIT) {
-				m_CloseRequested = true;
-			}
-
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}

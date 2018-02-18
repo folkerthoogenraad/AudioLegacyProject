@@ -10,17 +10,21 @@ namespace apryx {
 		HGLRC m_GLContext;
 
 		bool m_CloseRequested;
+		bool m_Resized;
 	public:
 		Win32Window(std::string title, int width = 640, int height = 480, bool full = false);
 
 		void setVisible(bool visible);
 
-		bool isCloseRequested() const;
+		bool isResized() const override;
+		bool isCloseRequested() const override;
 
-		void destroy();
+		LRESULT handleWindowsMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		void poll();
-		void swap();
+		void destroy() override;
+
+		void poll() override;
+		void swap() override;
 	};
 
 }

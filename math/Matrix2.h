@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace ftec {
+namespace apryx {
 	template<typename T>
 	struct Matrix2
 	{

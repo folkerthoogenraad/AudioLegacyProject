@@ -8,7 +8,7 @@
 //[ d e f ]
 //[ g h i ]
 
-namespace ftec {
+namespace apryx {
 
 	template<typename T>
 	struct Vector2;

@@ -4,7 +4,7 @@
 
 #include "Vector2.h"
 
-namespace ftec {
+namespace apryx {
 
 	template<typename T>
 	struct Triangle2 {

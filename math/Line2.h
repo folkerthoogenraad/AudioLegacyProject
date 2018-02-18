@@ -5,7 +5,7 @@
 
 //TODO refactor this thing
 
-namespace ftec {
+namespace apryx {
 	template<typename T>
 	struct Line2 {
 		Vector2<T> a;

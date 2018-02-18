@@ -4,7 +4,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 
-namespace ftec {
+namespace apryx {
 
 	template <typename T>
 	Matrix3<T>::Matrix3()

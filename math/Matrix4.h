@@ -11,7 +11,7 @@
 //Also, the two matrix classes are the only two with a cpp file attached to them
 //Maybe i should do this with more classes, I don't know
 
-namespace ftec {
+namespace apryx {
 
 
 	template <typename T>

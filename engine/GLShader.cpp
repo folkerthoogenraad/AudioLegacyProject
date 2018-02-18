@@ -1,11 +1,11 @@
-#include "Shader.h"
+#include "GLShader.h"
 
 #include <iostream>
 
 #include "GL.h"
 
 namespace apryx {
-	Shader::Shader(Type type, const char * source)
+	GLShader::GLShader(Type type, const char * source)
 		: m_Type(type)
 	{
 		m_ID = glCreateShader(type == Type::Fragment ? GL_FRAGMENT_SHADER : GL_VERTEX_SHADER);

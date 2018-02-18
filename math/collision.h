@@ -2,7 +2,7 @@
 
 #include "collisionresult.h"
 
-namespace ftec {
+namespace apryx {
 
 	//Forward declare all the way !
 	template <typename T>

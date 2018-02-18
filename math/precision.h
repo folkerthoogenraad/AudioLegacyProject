@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/Matrix2.h"
-#include "math/Matrix3.h"
+#include "Matrix2.h"
+#include "Matrix3.h"
 
 /*
 For precision on computional geometry.
@@ -10,7 +10,7 @@ Floating point is currently not --really-- supported
 Please refer to 
 https://www.cs.cmu.edu/~quake/robust.html
 */
-namespace ftec {
+namespace apryx {
 
 	template <typename T>
 	struct Line2;

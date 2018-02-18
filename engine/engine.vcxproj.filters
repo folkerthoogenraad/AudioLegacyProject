@@ -8,11 +8,18 @@
     <ClCompile Include="Window.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>graphics</Filter>
+    <ClCompile Include="GLShader.cpp">
+      <Filter>opengl</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgram.cpp" />
-    <ClCompile Include="GL.cpp" />
+    <ClCompile Include="GLShaderProgram.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="GLVertexBufferObject.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="GL.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -21,14 +28,17 @@
     <ClInclude Include="Window.h">
       <Filter>graphics</Filter>
     </ClInclude>
+    <ClInclude Include="GLShader.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShaderProgram.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="GLVertexBufferObject.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
     <ClInclude Include="GL.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderProgram.h">
-      <Filter>graphics</Filter>
+      <Filter>opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +47,9 @@
     </Filter>
     <Filter Include="graphics">
       <UniqueIdentifier>{24fe63c0-ec43-40c3-8f3f-31226d96be6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl">
+      <UniqueIdentifier>{72311f19-f275-454e-9673-a8770656e38e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

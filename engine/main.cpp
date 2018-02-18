@@ -2,36 +2,41 @@
 
 #include <iostream>
 
-#include "ShaderProgram.h"
+#include "GLShaderProgram.h"
+#include "GLVertexBufferObject.h"
 
 #include "GL.h"
+
+#include "math/Matrix4.h"
 
 int main() {
 	using namespace apryx;
 
 	Win32Window window("OpenGL");
 
-	ShaderProgram program(
-		Shader(Shader::Vertex, DEFAULT_VERTEX_SOURCE),
-		Shader(Shader::Fragment, DEFAULT_FRAGMENT_SOURCE));
+	GLShaderProgram program(
+		GLShader(GLShader::Vertex, DEFAULT_VERTEX_SOURCE),
+		GLShader(GLShader::Fragment, DEFAULT_FRAGMENT_SOURCE));
 
 	program.use();
 
+	int l = program.getUniformLocation("matrix");
+
+	program.setUniform(l, Matrix4f::translation(0.5f, 0.5f, 0));
+
 	float vertices[] = {
-		0.0f,  0.5f, // Vertex 1 (X, Y)
-		0.5f, -0.5f, // Vertex 2 (X, Y)
-		-0.5f, -0.5f  // Vertex 3 (X, Y)
+		0.0f,  0.5f, 0, // Vertex 1 (X, Y)
+		0.5f, -0.5f, 0, // Vertex 2 (X, Y)
+		-0.5f, -0.5f, 0  // Vertex 3 (X, Y)
 	};
 
-	GLuint vbo;
-	glGenBuffers(1, &vbo); 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	GLVertexBufferObject vbo;
+	vbo.setBufferData(GLVertexBufferObject::Static, sizeof(vertices), vertices);
+	
+	vbo.bind();
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(SHADER_POSITION_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(SHADER_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(SHADER_POSITION_LOCATION);
-
 
 	checkGLError();
 
@@ -39,6 +44,11 @@ int main() {
 
 	while (!window.isCloseRequested()) {
 		window.poll();
+
+		if (window.isResized()) {
+			std::cout << "Wat" << std::endl;
+			glViewport(0, 0, window.getWidth(), window.getHeight());
+		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

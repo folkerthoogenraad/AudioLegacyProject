@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace ftec {
+namespace apryx {
 
 	template <typename T>
 	struct Vector2;

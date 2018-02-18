@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ftec {
+namespace apryx {
 
 	template <typename T>
 	struct CollisionResult {

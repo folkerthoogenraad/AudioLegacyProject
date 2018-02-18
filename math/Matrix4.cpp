@@ -4,9 +4,7 @@
 #include "Vector3.h"
 #include "Vector4.h"
 
-#include "logger/log.h" //TODO remove ofc
-
-namespace ftec {
+namespace apryx {
 
 	template <typename T>
 	Matrix4<T>::Matrix4()

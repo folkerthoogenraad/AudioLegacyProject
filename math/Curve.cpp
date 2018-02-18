@@ -2,8 +2,8 @@
 
 #include "math.h"
 
-namespace ftec {
-	float ftec::curves::CubicBezier::interpolate(float x) const
+namespace apryx {
+	float apryx::curves::CubicBezier::interpolate(float x) const
 	{
 		const Vector2f p0 = Vector2f(0, 0);
 		const Vector2f p3 = Vector2f(1, 1);
@@ -42,7 +42,7 @@ namespace ftec {
 		return result.y;
 	}
 
-	Vector2f ftec::curves::VCubicBezier::interpolate(float x) const
+	Vector2f apryx::curves::VCubicBezier::interpolate(float x) const
 	{
 		Vector2f result = tween(//blue
 			tween(//red

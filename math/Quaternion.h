@@ -1,10 +1,10 @@
 #pragma once
 
 #include <array>
-#include "math/math.h"	//For sin, cos, etc
+#include "math.h"	//For sin, cos, etc
 
 //TODO find out if this is the right thing or not
-namespace ftec {
+namespace apryx {
 
 	template<typename T> struct Vector3;
 	template<typename T> struct Matrix4;

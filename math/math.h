@@ -4,14 +4,22 @@
 #include <math.h> //for sin, cos, tan, etc
 #include <cstdlib>
 
-namespace ftec {
+namespace apryx {
 
+	
 	template <typename T>
 	struct Vector2;
 	template <typename T>
 	struct Vector3;
 	template <typename T>
 	struct Vector4;
+
+	template <typename T>
+	struct Matrix4;
+	template <typename T>
+	struct Matrix3;
+	template <typename T>
+	struct Matrix2;
 
 	template<typename T>
 	inline T clamp(const T &min, const T &max, T value)

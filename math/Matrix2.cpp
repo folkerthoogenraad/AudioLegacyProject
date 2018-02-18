@@ -1,6 +1,6 @@
 #include "Matrix2.h"
 
-namespace ftec {
+namespace apryx {
 
 	template <typename T>
 	Matrix2<T>::Matrix2()

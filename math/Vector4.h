@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ftec {
+namespace apryx {
 
 	//Forward declare for the typedefs
 	template<typename T> struct Vector4;

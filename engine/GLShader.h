@@ -3,11 +3,13 @@
 #define DEFAULT_VERTEX_SOURCE R"glsl(
     #version 150 core
 
+	uniform mat4 matrix;
+
     in vec3 position;
 
     void main()
     {
-        gl_Position = vec4(position, 1.0);
+        gl_Position = matrix * vec4(position, 1.0);
     }
 )glsl"
 
@@ -28,7 +30,7 @@
 
 namespace apryx {
 
-	class Shader {
+	class GLShader {
 	public:
 		enum Type {
 			Vertex,
@@ -40,7 +42,7 @@ namespace apryx {
 		Type m_Type;
 
 	public:
-		Shader(Type type, const char *source);
+		GLShader(Type type, const char *source);
 
 		Type getType() const { return m_Type; }
 		unsigned int getID() const { return m_ID; }
