@@ -19,6 +19,8 @@ namespace apryx {
 		double runtime();
 		
 		void end();
+
+		static void sleep(double seconds);
 	};
 
 }

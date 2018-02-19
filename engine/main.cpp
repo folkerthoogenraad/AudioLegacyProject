@@ -93,6 +93,7 @@ int main() {
 		}
 
 		window.swap();
+		Timer::sleep(1 / 60.f);
 	}
 
 	window.destroy();

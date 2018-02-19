@@ -69,6 +69,8 @@ namespace apryx {
 	Win32Window::Win32Window(std::string title, int width, int height, bool full)
 		: Window(title,width,height,full)
 	{
+		SetProcessDPIAware();
+
 		registerClass();
 
 		// Make sure its the client size
@@ -90,6 +92,7 @@ namespace apryx {
 			NULL        // Additional application data
 		);
 
+
 		if (!m_Hwnd) {
 			MessageBox(NULL, "Failed to create window.", "Error", MB_OK | MB_ICONEXCLAMATION);
 			return;
@@ -104,6 +107,9 @@ namespace apryx {
 
 		HDC deviceContext = GetDC(m_Hwnd);
 
+		// Get the device scaling stuff
+		m_DPIScale = GetDeviceCaps(deviceContext, LOGPIXELSX) / 96.f;
+		
 		if (!deviceContext) {
 			MessageBox(NULL, "Failed to obtain the device context.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 			return;                               // Return FALSE
@@ -163,7 +169,7 @@ namespace apryx {
 			m_CloseRequested = true;
 		}
 
-		if (message == WM_SIZE) {
+		else if (message == WM_SIZE) {
 			int width = LOWORD(lParam);  // Macro to get the low-order word. 
 			int height = HIWORD(lParam); // Macro to get the high-order word. 
 
@@ -180,6 +186,11 @@ namespace apryx {
 	{
 		wglDeleteContext(m_GLContext);
 		CloseWindow(m_Hwnd);
+	}
+
+	float Win32Window::dpiScale() const
+	{
+		return m_DPIScale;
 	}
 
 	void Win32Window::poll()

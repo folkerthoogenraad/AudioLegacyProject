@@ -11,6 +11,8 @@ namespace apryx {
 
 		bool m_CloseRequested;
 		bool m_Resized;
+
+		float m_DPIScale = 1;
 	public:
 		Win32Window(std::string title, int width = 640, int height = 480, bool full = false);
 
@@ -22,6 +24,8 @@ namespace apryx {
 		LRESULT handleWindowsMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		void destroy() override;
+
+		float dpiScale() const override;
 
 		void poll() override;
 		void swap() override;

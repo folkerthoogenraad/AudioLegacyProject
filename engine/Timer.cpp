@@ -1,5 +1,7 @@
 #include "Timer.h"
 
+#include <thread>
+
 namespace apryx {
 	Timer::Timer()
 	{
@@ -44,5 +46,10 @@ namespace apryx {
 	{
 		m_Running = false;
 		m_End = std::chrono::system_clock::now();
+	}
+	void Timer::sleep(double seconds)
+	{
+		auto s = std::chrono::duration<double>(seconds);
+		std::this_thread::sleep_for(s);
 	}
 }

@@ -19,6 +19,8 @@ namespace apryx {
 		virtual bool isCloseRequested() const = 0;
 		virtual bool isResized() const = 0;
 
+		virtual float dpiScale() const { return 1; }
+
 		int getWidth() const { return m_Width; }
 		int getHeight() const { return m_Height; }
 	};
