@@ -139,6 +139,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GL.cpp" />
+    <ClCompile Include="GLTexture.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="GLShaderProgram.cpp" />
@@ -151,7 +153,9 @@
     <ClInclude Include="GL.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="GLShaderProgram.h" />
+    <ClInclude Include="GLTexture.h" />
     <ClInclude Include="GLVertexBufferObject.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Win32Window.h" />
     <ClInclude Include="Window.h" />

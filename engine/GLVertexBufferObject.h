@@ -13,6 +13,7 @@ namespace apryx {
 		unsigned int m_ID;
 	public:
 		GLVertexBufferObject();
+		~GLVertexBufferObject();
 
 		void bind();
 		void unbind();

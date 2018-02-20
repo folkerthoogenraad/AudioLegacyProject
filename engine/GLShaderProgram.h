@@ -12,6 +12,7 @@ namespace apryx {
 
 	public:
 		GLShaderProgram(const GLShader &vertexShader, const GLShader &fragmentShader);
+		~GLShaderProgram();
 
 		void use();
 		void reset();
@@ -23,6 +24,7 @@ namespace apryx {
 		void setUniform(int index, float v);
 		void setUniform(int index, Vector3f v);
 		void setUniform(int index, Matrix4f v);
+		void setUniform(int index, int texture);
 	};
 
 

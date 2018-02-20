@@ -29,6 +29,11 @@ namespace apryx {
 		checkGLError();
 	}
 
+	GLShaderProgram::~GLShaderProgram()
+	{
+		glDeleteProgram(m_ID);
+	}
+
 	void GLShaderProgram::use()
 	{
 		glUseProgram(m_ID);
@@ -61,5 +66,10 @@ namespace apryx {
 	void GLShaderProgram::setUniform(int index, Matrix4f v)
 	{
 		glUniformMatrix4fv(index, 1, GL_TRUE, &v.a);
+	}
+
+	void GLShaderProgram::setUniform(int index, int texture)
+	{
+		glUniform1i(index, texture);
 	}
 }

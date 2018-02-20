@@ -41,11 +41,13 @@
 	in vec2 v_UV;
 	in vec4 v_Color;
 
+	uniform sampler2D u_MainTexture;
+
 	out vec4 outColor;
 
 	void main()
 	{
-		outColor = vec4(1.0, 0.0, 1.0, 1.0);
+		outColor = texture(u_MainTexture, v_UV) * v_Color;
 	}
 )glsl"
 
@@ -71,6 +73,8 @@
 #define SHADER_MATRIX_VIEW "u_MatrixView"
 #define SHADER_MATRIX_PROJECTION "u_MatrixProjection"
 
+#define SHADER_MAIN_TEXTURE "u_MainTexture"
+
 namespace apryx {
 
 	class GLShader {
@@ -86,6 +90,7 @@ namespace apryx {
 
 	public:
 		GLShader(Type type, const char *source);
+		~GLShader();
 
 		Type getType() const { return m_Type; }
 		unsigned int getID() const { return m_ID; }

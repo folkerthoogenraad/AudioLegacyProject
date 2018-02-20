@@ -23,6 +23,12 @@
     <ClCompile Include="Timer.cpp">
       <Filter>time</Filter>
     </ClCompile>
+    <ClCompile Include="GLTexture.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -45,6 +51,12 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>time</Filter>
+    </ClInclude>
+    <ClInclude Include="GLTexture.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

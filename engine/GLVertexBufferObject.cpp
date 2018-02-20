@@ -9,6 +9,11 @@ namespace apryx {
 		glGenBuffers(1, &m_ID);
 	}
 
+	GLVertexBufferObject::~GLVertexBufferObject()
+	{
+		glDeleteBuffers(1, &m_ID);
+	}
+
 	void GLVertexBufferObject::bind()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_ID);

@@ -9,6 +9,9 @@
 
 #include "math/Matrix4.h"
 
+#include "Image.h"
+#include "GLTexture.h"
+
 #include "Timer.h"
 
 int main() {
@@ -16,7 +19,7 @@ int main() {
 
 	Win32Window window("OpenGL", 1280, 720, false);
 	
-	glClearColor(0, 0, 0, 1);
+	glClearColor(1, 1, 1, 1);
 
 	Timer timer;
 	double timeSum = 0;
@@ -24,8 +27,30 @@ int main() {
 
 	GLShaderProgram program(
 		GLShader(GLShader::Vertex, VERTEX_DEFAULT_SOURCE),
-		GLShader(GLShader::Fragment, FRAGMENT_UNLIT_COLOR));
+		GLShader(GLShader::Fragment, FRAGMENT_UNLIT_TEXTURE));
 
+	Image image(16, 16);
+
+	{
+		for (int y = 0; y < 16; y++) {
+			for (int x = 0; x < 16; x++){ 
+				Color32 r = Color32::white();
+				if ((x + y) % 2 == 0) {
+					r = Color32::black();
+				}
+
+				image.setColor(x, y, r);
+			}
+		}
+	}
+
+	GLTexture texture;
+	texture.setFiltering(GLTexture::NearestNeighbour);
+	texture.setWrapping(GLTexture::Clamp);
+
+	texture.setData(image);
+
+	texture.bind();
 
 	program.use();
 
@@ -33,8 +58,12 @@ int main() {
 	int matrixView = program.getUniformLocation(SHADER_MATRIX_VIEW);
 	int matrixProjection = program.getUniformLocation(SHADER_MATRIX_PROJECTION);
 
-	program.setUniform(matrixView, Matrix4f::translation(0, 0, 4));
+	int textureLocation = program.getUniformLocation(SHADER_MAIN_TEXTURE);
+
+	program.setUniform(matrixView, Matrix4f::translation(0, 0, 2));
 	program.setUniform(matrixProjection, Matrix4f::perspective(60, 16.f/9.f, 0.1f, 1000.f));
+
+	program.setUniform(textureLocation, 0);
 
 	float vertices[] = {
 		0.0f,  0.5f, 0, // Vertex 1 (X, Y)
@@ -46,6 +75,12 @@ int main() {
 		1,0,0,1,
 		0,1,0,1,
 		0,0,1,1
+	};
+
+	float uvs[] = {
+		0.5f, 1,
+		0, 0,
+		1, 0,
 	};
 
 	GLVertexBufferObject vertexBuffer;
@@ -64,6 +99,15 @@ int main() {
 
 	glVertexAttribPointer(SHADER_COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(SHADER_COLOR_LOCATION);
+
+
+	GLVertexBufferObject uvBuffer;
+	uvBuffer.setBufferData(GLVertexBufferObject::Static, sizeof(uvs), uvs);
+
+	uvBuffer.bind();
+
+	glVertexAttribPointer(SHADER_UV_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(SHADER_UV_LOCATION);
 
 	checkGLError();
 
