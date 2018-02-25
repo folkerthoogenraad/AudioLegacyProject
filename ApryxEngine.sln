@@ -10,6 +10,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "engine\engine.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "math", "math\math.vcxproj", "{7FAA047A-8F6C-48EA-ABB7-00FDE1D9B097}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{64D5581C-7D30-45EB-814E-D7D7C271E2A4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7FAA047A-8F6C-48EA-ABB7-00FDE1D9B097} = {7FAA047A-8F6C-48EA-ABB7-00FDE1D9B097}
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023} = {02895A7A-7356-4EBB-AA01-BD80A3A83023}
+		{AAC5E2D9-42A4-4501-8894-25668B57E106} = {AAC5E2D9-42A4-4501-8894-25668B57E106}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "audio", "audio\audio.vcxproj", "{02895A7A-7356-4EBB-AA01-BD80A3A83023}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +43,22 @@ Global
 		{7FAA047A-8F6C-48EA-ABB7-00FDE1D9B097}.Release|x64.Build.0 = Release|x64
 		{7FAA047A-8F6C-48EA-ABB7-00FDE1D9B097}.Release|x86.ActiveCfg = Release|Win32
 		{7FAA047A-8F6C-48EA-ABB7-00FDE1D9B097}.Release|x86.Build.0 = Release|Win32
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Debug|x64.ActiveCfg = Debug|x64
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Debug|x64.Build.0 = Debug|x64
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Debug|x86.ActiveCfg = Debug|Win32
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Debug|x86.Build.0 = Debug|Win32
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Release|x64.ActiveCfg = Release|x64
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Release|x64.Build.0 = Release|x64
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Release|x86.ActiveCfg = Release|Win32
+		{64D5581C-7D30-45EB-814E-D7D7C271E2A4}.Release|x86.Build.0 = Release|Win32
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Debug|x64.ActiveCfg = Debug|x64
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Debug|x64.Build.0 = Debug|x64
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Debug|x86.ActiveCfg = Debug|Win32
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Debug|x86.Build.0 = Debug|Win32
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Release|x64.ActiveCfg = Release|x64
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Release|x64.Build.0 = Release|x64
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Release|x86.ActiveCfg = Release|Win32
+		{02895A7A-7356-4EBB-AA01-BD80A3A83023}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,4 +21,32 @@ namespace apryx {
 
 		return m_Colors[x + y * m_Width];
 	}
+	Image Image::checkerboard(int width, int height, Color32 a, Color32 b)
+	{
+		Image image(width, height);
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				Color32 r = a;
+				if ((x + y) % 2 == 1) {
+					r = b;
+				}
+				image.setColor(x, y, r);
+			}
+		}
+
+		return image;
+	}
+	Image Image::colored(int width, int height, Color32 color)
+	{
+		Image image(width, height);
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				image.setColor(x, y, color);
+			}
+		}
+
+		return image;
+	}
 }

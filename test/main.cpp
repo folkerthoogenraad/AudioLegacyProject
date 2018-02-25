@@ -1,24 +1,25 @@
-#include "Win32Window.h"
+#include "engine/Win32Window.h"
 
 #include <iostream>
 
-#include "GLShaderProgram.h"
-#include "GLVertexBufferObject.h"
+#include "engine/GLShaderProgram.h"
+#include "engine/GLVertexBufferObject.h"
 
-#include "GL.h"
+#include "engine/GL.h"
 
 #include "math/Matrix4.h"
 
-#include "Image.h"
-#include "GLTexture.h"
+#include "engine/Image.h"
+#include "engine/GLTexture.h"
 
-#include "Timer.h"
+#include "engine/Timer.h"
 
-int main() {
+
+int test() {
 	using namespace apryx;
 
 	Win32Window window("OpenGL", 1280, 720, false);
-	
+
 	glClearColor(1, 1, 1, 1);
 
 	Timer timer;
@@ -29,20 +30,7 @@ int main() {
 		GLShader(GLShader::Vertex, VERTEX_DEFAULT_SOURCE),
 		GLShader(GLShader::Fragment, FRAGMENT_UNLIT_TEXTURE));
 
-	Image image(16, 16);
-
-	{
-		for (int y = 0; y < 16; y++) {
-			for (int x = 0; x < 16; x++){ 
-				Color32 r = Color32::white();
-				if ((x + y) % 2 == 0) {
-					r = Color32::black();
-				}
-
-				image.setColor(x, y, r);
-			}
-		}
-	}
+	Image image = Image::checkerboard(16, 16);
 
 	GLTexture texture;
 	texture.setFiltering(GLTexture::NearestNeighbour);
@@ -61,7 +49,7 @@ int main() {
 	int textureLocation = program.getUniformLocation(SHADER_MAIN_TEXTURE);
 
 	program.setUniform(matrixView, Matrix4f::translation(0, 0, 2));
-	program.setUniform(matrixProjection, Matrix4f::perspective(60, 16.f/9.f, 0.1f, 1000.f));
+	program.setUniform(matrixProjection, Matrix4f::perspective(60, 16.f / 9.f, 0.1f, 1000.f));
 
 	program.setUniform(textureLocation, 0);
 
@@ -85,7 +73,7 @@ int main() {
 
 	GLVertexBufferObject vertexBuffer;
 	vertexBuffer.setBufferData(GLVertexBufferObject::Static, sizeof(vertices), vertices);
-	
+
 	vertexBuffer.bind();
 
 	glVertexAttribPointer(SHADER_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -141,4 +129,6 @@ int main() {
 	}
 
 	window.destroy();
+
+	return 0;
 }

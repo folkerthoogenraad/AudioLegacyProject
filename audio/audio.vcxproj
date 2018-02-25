@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{AAC5E2D9-42A4-4501-8894-25668B57E106}</ProjectGuid>
-    <RootNamespace>engine</RootNamespace>
+    <ProjectGuid>{02895A7A-7356-4EBB-AA01-BD80A3A83023}</ProjectGuid>
+    <RootNamespace>audio</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -69,23 +69,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)libs\GLEW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)libs\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)libs\GLEW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)libs\GLEW\lib\Release\x64;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)libs\GLEW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>
-    </LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)libs\OpenAL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)libs\GLEW\include;$(IncludePath)</IncludePath>
-    <LibraryPath>
-    </LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)libs\OpenAL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -94,9 +84,6 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>glew32s.lib;opengl32.lib;math.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,9 +92,6 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -121,7 +105,6 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,30 +119,23 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32s.lib;opengl32.lib;math.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GL.cpp" />
-    <ClCompile Include="GLTexture.cpp" />
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="GLShader.cpp" />
-    <ClCompile Include="GLShaderProgram.cpp" />
-    <ClCompile Include="GLVertexBufferObject.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Win32Window.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClInclude Include="AudioBuffer.h" />
+    <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="AudioSystem.h" />
+    <ClInclude Include="AudioUtils.h" />
+    <ClInclude Include="rtmidi\RtMidi.h" />
+    <ClInclude Include="rtmidi\rtmidi_c.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GL.h" />
-    <ClInclude Include="GLShader.h" />
-    <ClInclude Include="GLShaderProgram.h" />
-    <ClInclude Include="GLTexture.h" />
-    <ClInclude Include="GLVertexBufferObject.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Win32Window.h" />
-    <ClInclude Include="Window.h" />
+    <ClCompile Include="AudioBuffer.cpp" />
+    <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="AudioSystem.cpp" />
+    <ClCompile Include="AudioUtils.cpp" />
+    <ClCompile Include="rtmidi\RtMidi.cpp" />
+    <ClCompile Include="rtmidi\rtmidi_c.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

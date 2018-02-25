@@ -28,7 +28,6 @@ namespace apryx {
 	}
 	GLShader::~GLShader()
 	{
-		std::cout << "Deleting shader!" << std::endl;
 		glDeleteShader(m_ID);
 	}
 }
