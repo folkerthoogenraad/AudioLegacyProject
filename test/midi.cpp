@@ -19,8 +19,10 @@ static void finish(int ignore) { done = true; }
 int main() {
 	using namespace apryx;
 
-	const double frameRate = 120;
-	const int bufferCount = 6;
+	const double frameRate = 240;
+
+	const int bufferSize = 256;
+	const int bufferCount = 4;
 
 	// =====================================================//
 	// RTMidi stuff
@@ -46,7 +48,7 @@ int main() {
 	auto source = std::make_shared<AudioSource>(system);
 
 	std::vector<double> audioSamples;
-	audioSamples.resize(format.getSampleRate() / frameRate);
+	audioSamples.resize(bufferSize);
 
 	std::array<std::shared_ptr<AudioBuffer>, bufferCount> audioBuffers;
 	for (int i = 0; i < audioBuffers.size(); i++) {
@@ -77,9 +79,9 @@ int main() {
 				std::cout << "Byte " << i << " = " << ((int)message[i]) << std::dec << ", ";
 
 			if (nBytes > 0)
-				std::cout << "stamp = " << stamp << std::endl;*/
+				std::cout << "stamp = " << stamp << std::endl;
 			if (nBytes == 0)
-				cont = false;
+				cont = false;*/
 
 			if (nBytes != 0)
 			{
@@ -87,14 +89,19 @@ int main() {
 					frequency = midiToFrequency(message[1]);
 				}
 			}
+			else {
+				cont = false;
+			}
 		}
 
 		if (!source->isPlaying()) {
 			source->play();
 		}
 
+		int processed = source->getBuffersProcessed();
+
 		// Writing audio stuff
-		while (source->getBuffersProcessed() > 0) {
+		while (processed > 0) {
 			source->unqueueBuffer(*audioBuffers[pCount]);
 
 			double phaseAdd = frequency / format.getSampleRate();
@@ -111,6 +118,8 @@ int main() {
 			source->queueBuffer(*audioBuffers[pCount]);
 
 			pCount = (pCount + 1) % audioBuffers.size();
+
+			processed -= 1;
 		}
 
 		Timer::sleep(1 / frameRate);
