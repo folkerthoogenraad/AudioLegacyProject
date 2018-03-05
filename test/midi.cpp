@@ -4,132 +4,194 @@
 #include <signal.h>
 #include <bitset>
 #include <array>
+#include <memory>
 
-#include "audio/AudioSystem.h"
-#include "audio/AudioBuffer.h"
-#include "audio/AudioSource.h"
 #include "audio/AudioUtils.h"
 
-#include "audio/rtmidi/RtMidi.h"
+#include "audio/MidiController.h"
 #include "engine/Timer.h"
 
-bool done;
-static void finish(int ignore) { done = true; }
+#include "audio/rtaudio/RtAudio.h"
+#include "audio/AudioSystem.h"
+#include <iostream>
+#include <cstdlib>
 
-int main() {
+
+double phase = 0;
+const int requestSampleRate = 48000;// 48000;
+double frequency = 440;
+double bend = 0;
+
+double volume = 0;
+
+std::shared_ptr<apryx::MidiController> midiIn;
+
+
+// Two-channel sawtooth wave generator.
+int saw(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
+	double streamTime, RtAudioStreamStatus status, void *userData)
+{
+
+	for (auto &event : midiIn->poll()) {
+		if (event.isControlChange()) {
+			std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
+		}
+		if (event.isProgramChange()) {
+			std::cout << "Goto program " << event.getProgramNumber() << std::endl;
+		}
+		if (event.isNoteOn()) {
+			frequency = event.getKeyFrequency();
+			volume = event.getVelocity() * 0.2;
+		}
+
+		if (event.isPitchBend()) {
+			bend = event.getPitchBendAmount();
+		}
+	}
+	
+
+	unsigned int i, j;
+	double *buffer = (double *)outputBuffer;
+	double *lastValues = (double *)userData;
+	if (status)
+		std::cout << "Stream underflow detected!" << std::endl;
+
+	// Write interleaved audio data.
+	for (i = 0; i<nBufferFrames; i++) {
+
+		double value = apryx::audioSine(phase) * volume;
+
+		buffer[i * 2] = value;
+		buffer[i * 2 + 1] = value;
+
+		phase += (frequency * apryx::semitonesMultiplier(bend * 1)) / (double)requestSampleRate;
+	}
+
+	return 0;
+}
+
+class TestSource : public apryx::PCMSource{
+	double phase = 0;
+	double frequency = 440;
+public:
+
+	virtual bool get(std::vector<double> &values, apryx::AudioFormat format) 
+	{
+		for (int i = 0; i < values.size() / format.channels; i++) {
+
+			double value = apryx::audioSine(phase) * 0.5;
+
+			for(int j = 0; j < format.channels; j++)
+				values[i * format.channels + j] = value;
+
+			phase += frequency / (double)format.sampleRate;
+		}
+		return true;
+	};
+};
+
+int main() 
+{
 	using namespace apryx;
-
-	const double frameRate = 240;
-
-	const int bufferSize = 256;
-	const int bufferCount = 4;
-
 	// =====================================================//
-	// RTMidi stuff
+	// Midi stuff
 	// =====================================================//
-	auto midiIn = std::make_shared<RtMidiIn>();
+	midiIn = std::make_shared<MidiController>();
 
 	unsigned int nPorts = midiIn->getPortCount();
 	if (nPorts == 0) {
 		std::cout << "No ports available!\n";
+		return -1;
 	}
+
 	midiIn->openPort(0);
 
-	// Don't ignore sysex, timing, or active sensing messages.
-	midiIn->ignoreTypes(false, false, false);
-
 
 	// =====================================================//
-	// Audio format stuff
+	// Audio stuff
 	// =====================================================//
-	AudioFormat format(44100, 16, AudioFormat::Mono);
 
-	auto system = std::make_shared<AudioSystem>(format);
-	auto source = std::make_shared<AudioSource>(system);
+	AudioFormat format;
+	std::shared_ptr<TestSource> source = std::make_shared<TestSource>();
 
-	std::vector<double> audioSamples;
-	audioSamples.resize(bufferSize);
+	AudioSystem system;
 
-	std::array<std::shared_ptr<AudioBuffer>, bufferCount> audioBuffers;
-	for (int i = 0; i < audioBuffers.size(); i++) {
-		audioBuffers[i] = std::make_shared<AudioBuffer>(system);
-
-		audioBuffers[i]->setDataNormalized(audioSamples, format);
-
-		source->queueBuffer(*audioBuffers[i]);
-	}
-
-	source->play();
-
-	double phase = 0;
-	double frequency = 200;
-
-	int pCount = 0;
-	while (true) {
-
-
-		// Reading midi stuff
-		bool cont = true;
-		while (cont) {
-			std::vector<unsigned char> message;
-			float stamp = midiIn->getMessage(&message);
-
-			int nBytes = message.size();
-			/*for (int i = 0; i < nBytes; i++)
-				std::cout << "Byte " << i << " = " << ((int)message[i]) << std::dec << ", ";
-
-			if (nBytes > 0)
-				std::cout << "stamp = " << stamp << std::endl;
-			if (nBytes == 0)
-				cont = false;*/
-
-			if (nBytes != 0)
-			{
-				if(message[0] == 144){
-					frequency = midiToFrequency(message[1]);
-				}
-			}
-			else {
-				cont = false;
-			}
-		}
-
-		if (!source->isPlaying()) {
-			source->play();
-		}
-
-		int processed = source->getBuffersProcessed();
-
-		// Writing audio stuff
-		while (processed > 0) {
-			source->unqueueBuffer(*audioBuffers[pCount]);
-
-			double phaseAdd = frequency / format.getSampleRate();
-
-			for (int i = 0; i < audioSamples.size(); i++) {
-
-				audioSamples[i] = audioSine(phase);
-
-				phase += phaseAdd;
-			}
-
-			audioBuffers[pCount]->setDataNormalized(audioSamples, format);
-
-			source->queueBuffer(*audioBuffers[pCount]);
-
-			pCount = (pCount + 1) % audioBuffers.size();
-
-			processed -= 1;
-		}
-
-		Timer::sleep(1 / frameRate);
-	}
-
-	std::cout << "Welp its done now bitch" << std::endl;
+	system.play(format, source);
 
 	std::cin.get();
-
 }
+
+int main2()
+{
+	// =====================================================//
+	// RTMidi stuff
+	// =====================================================//
+	midiIn = std::make_shared<apryx::MidiController>();
+
+	unsigned int nPorts = midiIn->getPortCount();
+	if (nPorts == 0) {
+		std::cout << "No ports available!\n";
+		return -1;
+	}
+
+	midiIn->openPort(0);
+
+
+	// =====================================================//
+	// RTAudio stuff
+	// =====================================================//
+	RtAudio dac;
+
+	int deviceCount = dac.getDeviceCount();
+	auto info = dac.getDeviceInfo(0);
+
+	std::cout << info.name << std::endl;
+
+	if (deviceCount < 1) {
+		std::cout << "\nNo audio devices found!\n";
+		std::cin.get();
+		exit(0);
+	}
+	RtAudio::StreamOptions options;
+	options.flags = RTAUDIO_MINIMIZE_LATENCY;
+	options.numberOfBuffers = 1;
+	options.streamName = "Best stream ever.";
+
+	RtAudio::StreamParameters parameters;
+	parameters.deviceId = 0;// dac.getDefaultOutputDevice();
+	parameters.nChannels = 2;
+	parameters.firstChannel = 0;
+	unsigned int sampleRate = requestSampleRate;// 44100;
+	unsigned int bufferFrames = 128; // 256 sample frames
+	double data[2];
+	try {
+		dac.openStream(&parameters, NULL, RTAUDIO_FLOAT64,
+			sampleRate, &bufferFrames, &saw, (void *)&data, &options);
+		dac.startStream();
+	}
+	catch (RtAudioError& e) {
+		e.printMessage();
+		std::cin.get();
+		exit(0);
+	}
+
+	char input;
+	std::cout << "\nPlaying ... press <enter> to quit.\n";
+	std::cin.get(input);
+	try {
+		// Stop the stream
+		dac.stopStream();
+	}
+	catch (RtAudioError& e) {
+		e.printMessage();
+	}
+	if (dac.isStreamOpen()) dac.closeStream();
+
+	return 0;
+}
+
+
+
 
 int midi()
 {
@@ -149,13 +211,9 @@ int midi()
 	// Don't ignore sysex, timing, or active sensing messages.
 	midiin->ignoreTypes(false, false, false);
 
-	// Install an interrupt handler function.
-	done = false;
-	(void)signal(SIGINT, finish);
-
 	// Periodically check input queue.
 	std::cout << "Reading MIDI from port ... quit with Ctrl-C.\n";
-	while (!done) {
+	while (true) {
 		bool cont = true;
 		while (cont) {
 			stamp = midiin->getMessage(&message);

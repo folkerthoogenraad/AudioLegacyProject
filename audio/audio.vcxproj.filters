@@ -7,44 +7,108 @@
     <Filter Include="rtmidi">
       <UniqueIdentifier>{6cebb304-3033-44d9-9b62-5ec3479913ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rtaudio">
+      <UniqueIdentifier>{66424d8a-d8e7-423b-868f-ed9052504960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="midi">
+      <UniqueIdentifier>{c4e066d4-28ba-4dd4-bf5c-d8890d81e504}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioSystem.cpp">
-      <Filter>audio</Filter>
-    </ClCompile>
     <ClCompile Include="rtmidi\RtMidi.cpp">
       <Filter>rtmidi</Filter>
     </ClCompile>
     <ClCompile Include="rtmidi\rtmidi_c.cpp">
       <Filter>rtmidi</Filter>
     </ClCompile>
-    <ClCompile Include="AudioBuffer.cpp">
-      <Filter>audio</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioSource.cpp">
-      <Filter>audio</Filter>
-    </ClCompile>
     <ClCompile Include="AudioUtils.cpp">
       <Filter>audio</Filter>
     </ClCompile>
+    <ClCompile Include="rtaudio\asio.cpp">
+      <Filter>rtaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="rtaudio\asiodrivers.cpp">
+      <Filter>rtaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="rtaudio\asiolist.cpp">
+      <Filter>rtaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="rtaudio\iasiothiscallresolver.cpp">
+      <Filter>rtaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="rtaudio\RtAudio.cpp">
+      <Filter>rtaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="MidiEvent.cpp">
+      <Filter>midi</Filter>
+    </ClCompile>
+    <ClCompile Include="MidiController.cpp">
+      <Filter>midi</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioSystem.h">
-      <Filter>audio</Filter>
-    </ClInclude>
     <ClInclude Include="rtmidi\RtMidi.h">
       <Filter>rtmidi</Filter>
     </ClInclude>
     <ClInclude Include="rtmidi\rtmidi_c.h">
       <Filter>rtmidi</Filter>
     </ClInclude>
-    <ClInclude Include="AudioBuffer.h">
-      <Filter>audio</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioSource.h">
-      <Filter>audio</Filter>
-    </ClInclude>
     <ClInclude Include="AudioUtils.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\asio.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\asiodrivers.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\asiodrvr.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\asiolist.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\asiosys.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\dsound.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\FunctionDiscoveryKeys_devpkey.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\ginclude.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\iasiodrv.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\iasiothiscallresolver.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\RtAudio.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="rtaudio\soundcard.h">
+      <Filter>rtaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="MidiEvent.h">
+      <Filter>midi</Filter>
+    </ClInclude>
+    <ClInclude Include="MidiController.h">
+      <Filter>midi</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMSource.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioFormat.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMMixer.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
       <Filter>audio</Filter>
     </ClInclude>
   </ItemGroup>

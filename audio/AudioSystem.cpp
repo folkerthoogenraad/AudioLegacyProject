@@ -1,64 +1,83 @@
 #include "AudioSystem.h"
 
-#include <iostream>
-
-#include <assert.h>
-#include <al.h>
-#include <alc.h>
-
-#define LOG(x) std::cout << x << std::endl
-
 namespace apryx {
 
+	static int processRTAudio(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
+		double streamTime, RtAudioStreamStatus status, void *userData)
+	{
+		AudioSystem* system = (AudioSystem*)userData;
 
-	//Auch?
-	static ALCdevice *g_Device;
-	static ALCcontext *g_Context;
+		const auto &source = system->getSource();
 
-	static void checkError() {
-		ALCenum error;
+		// Should be allocating this buffer, but whatever atm
+		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
-		error = alGetError();
-		if (error != AL_NO_ERROR)
-			LOG("OpenAL error : " << error);
-	}
+		double *buffer = (double*)outputBuffer;
 
-	static void initAL() {
-		static bool init = false;
-
-		if (init)
-			return;
-
-		g_Device = alcOpenDevice(nullptr);
-
-		if (!g_Device) {
-			LOG("Failed to open default playback device. ");
+		if (source->get(samples, system->getAudioFormat())) {
+			for (int i = 0; i < samples.size(); i++)
+				buffer[i] = samples[i];
 		}
 
-		checkError();
+		return 0;
+	}
 
-		g_Context = alcCreateContext(g_Device, NULL);
+	AudioSystem::AudioSystem()
+	{ }
 
-		if (!alcMakeContextCurrent(g_Context)) {
-			LOG("Failed to create context and make context current.");
+	AudioSystem::~AudioSystem()
+	{
+		stop();
+	}
+
+	void AudioSystem::play(AudioFormat format, std::shared_ptr<PCMSource> source)
+	{
+		m_Source = source;
+		m_AudioFormat = format;
+
+		int deviceCount = m_Dac.getDeviceCount();
+
+		if (deviceCount < 1) {
+			std::cout << "\nNo audio devices found!\n";
+			std::cin.get();
+			exit(0);
 		}
+		RtAudio::StreamOptions options;
+		options.flags = RTAUDIO_MINIMIZE_LATENCY;
+		options.numberOfBuffers = 1;
+		options.streamName = "Best stream ever.";
 
-		checkError();
+		RtAudio::StreamParameters parameters;
+		parameters.deviceId = 0;// dac.getDefaultOutputDevice();
+		parameters.nChannels = format.channels;
+		parameters.firstChannel = 0;
+		unsigned int sampleRate = format.sampleRate;// 44100;
+		unsigned int bufferFrames = 128; // 256 sample frames
 
-		init = true;
+		try {
+			m_Dac.openStream(&parameters, NULL, RTAUDIO_FLOAT64,
+				sampleRate, &bufferFrames, &processRTAudio, (void *)this, &options);
+			m_Dac.startStream();
+		}
+		catch (RtAudioError& e) {
+			e.printMessage();
+			std::cout << "Press any key to continue...";
+			std::cin.get();
+			exit(0);
+		}
 	}
 
-	AudioSystem::AudioSystem(AudioFormat format)
-		:m_Format(format)
+	void AudioSystem::stop()
 	{
-		initAL();
+		try {
+			// Stop the stream
+			m_Dac.stopStream();
+		}
+		catch (RtAudioError& e) {
+			e.printMessage();
+		}
+		if (m_Dac.isStreamOpen()) m_Dac.closeStream();
+	}
 
-		alListener3f(AL_POSITION, 0, 0, 0);
-		alListener3f(AL_VELOCITY, 0, 0, 0);
-	}
-	AudioFormat::AudioFormat(size_t sampleRate, size_t bitsPerSample, AudioType type)
-		: m_SampleRate(sampleRate), m_BitsPerSample(bitsPerSample), m_Type(type)
-	{
-		assert(bitsPerSample == 8 || bitsPerSample == 16, "Bits per sample must be either 8 or 16 bits.");
-	}
+
 }

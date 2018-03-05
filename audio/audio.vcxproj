@@ -83,6 +83,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -91,6 +92,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,6 +103,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -115,6 +118,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -122,18 +126,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AudioBuffer.h" />
-    <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="AudioFormat.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="AudioUtils.h" />
+    <ClInclude Include="MidiController.h" />
+    <ClInclude Include="MidiEvent.h" />
+    <ClInclude Include="PCMMixer.h" />
+    <ClInclude Include="PCMSource.h" />
+    <ClInclude Include="rtaudio\asio.h" />
+    <ClInclude Include="rtaudio\asiodrivers.h" />
+    <ClInclude Include="rtaudio\asiodrvr.h" />
+    <ClInclude Include="rtaudio\asiolist.h" />
+    <ClInclude Include="rtaudio\asiosys.h" />
+    <ClInclude Include="rtaudio\dsound.h" />
+    <ClInclude Include="rtaudio\FunctionDiscoveryKeys_devpkey.h" />
+    <ClInclude Include="rtaudio\ginclude.h" />
+    <ClInclude Include="rtaudio\iasiodrv.h" />
+    <ClInclude Include="rtaudio\iasiothiscallresolver.h" />
+    <ClInclude Include="rtaudio\RtAudio.h" />
+    <ClInclude Include="rtaudio\soundcard.h" />
     <ClInclude Include="rtmidi\RtMidi.h" />
     <ClInclude Include="rtmidi\rtmidi_c.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioBuffer.cpp" />
-    <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="AudioUtils.cpp" />
+    <ClCompile Include="MidiController.cpp" />
+    <ClCompile Include="MidiEvent.cpp" />
+    <ClCompile Include="rtaudio\asio.cpp" />
+    <ClCompile Include="rtaudio\asiodrivers.cpp" />
+    <ClCompile Include="rtaudio\asiolist.cpp" />
+    <ClCompile Include="rtaudio\iasiothiscallresolver.cpp" />
+    <ClCompile Include="rtaudio\RtAudio.cpp" />
     <ClCompile Include="rtmidi\RtMidi.cpp" />
     <ClCompile Include="rtmidi\rtmidi_c.cpp" />
   </ItemGroup>
