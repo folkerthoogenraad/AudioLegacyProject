@@ -3,5 +3,27 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="midi.cpp" />
+    <ClCompile Include="MidiSource.cpp">
+      <Filter>Midi</Filter>
+    </ClCompile>
+    <ClCompile Include="iir\IIRFilter.cpp">
+      <Filter>iir</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Midi">
+      <UniqueIdentifier>{406aa795-73c0-4ad5-b13e-673c85e93d2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iir">
+      <UniqueIdentifier>{0ba9860c-f089-4af0-8024-3046d38c3f88}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MidiSource.h">
+      <Filter>Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="iir\IIRFilter.h">
+      <Filter>iir</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

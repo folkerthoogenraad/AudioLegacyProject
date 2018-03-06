@@ -59,6 +59,10 @@ namespace apryx{
 			return lerp(1.0, -1.0, (v - 0.5) * 2.0);
 	}
 
+	double audioRandom() {
+		return rand() / (double)RAND_MAX;
+	}
+
 	double audioSquare(double input)
 	{
 		double v = fmod(input, 1);
@@ -68,6 +72,20 @@ namespace apryx{
 	double midiToFrequency(int midiKey)
 	{
 		return pow(2, (midiKey - 69) / 12.f) * 440;
+	}
+
+	double audioLerp(double a, double b, double v)
+	{
+		return a + (b - a) * v;
+	}
+
+	double audioClamp(double value, double min, double max)
+	{
+		if (value < min)
+			return min;
+		if (value > max)
+			return max;
+		return value;
 	}
 
 	double remap(double startMin, double startMax, double min, double max, double value)

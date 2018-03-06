@@ -36,7 +36,13 @@ namespace apryx {
 	double audioTriangle(double input);
 	double audioSquare(double input);
 
+	double random();
+
 	double midiToFrequency(int midiKey);
+
+	double audioRandom();
+	double audioLerp(double a, double b, double v);
+	double audioClamp(double value, double min = 0, double max = 1);
 
 	double remap(double startMin, double startMax, double min, double max, double value);
 

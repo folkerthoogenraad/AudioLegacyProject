@@ -1,5 +1,7 @@
 #include "AudioSystem.h"
 
+#include "test/iir/IIRFilter.h"
+
 namespace apryx {
 
 	static int processRTAudio(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
@@ -12,12 +14,12 @@ namespace apryx {
 		// Should be allocating this buffer, but whatever atm
 		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
-		double *buffer = (double*)outputBuffer;
+		double *buffer = (double*)outputBuffer; 
+		
+		source->get(samples, system->getAudioFormat());
 
-		if (source->get(samples, system->getAudioFormat())) {
-			for (int i = 0; i < samples.size(); i++)
-				buffer[i] = samples[i];
-		}
+		for (int i = 0; i < samples.size(); i++)
+			buffer[i] = samples[i];
 
 		return 0;
 	}

@@ -16,70 +16,35 @@
 #include <iostream>
 #include <cstdlib>
 
-
-double phase = 0;
-const int requestSampleRate = 48000;// 48000;
-double frequency = 440;
-double bend = 0;
-
-double volume = 0;
-
-std::shared_ptr<apryx::MidiController> midiIn;
+#include "MidiSource.h"
 
 
-// Two-channel sawtooth wave generator.
-int saw(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
-	double streamTime, RtAudioStreamStatus status, void *userData)
-{
-
-	for (auto &event : midiIn->poll()) {
-		if (event.isControlChange()) {
-			std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
-		}
-		if (event.isProgramChange()) {
-			std::cout << "Goto program " << event.getProgramNumber() << std::endl;
-		}
-		if (event.isNoteOn()) {
-			frequency = event.getKeyFrequency();
-			volume = event.getVelocity() * 0.2;
-		}
-
-		if (event.isPitchBend()) {
-			bend = event.getPitchBendAmount();
-		}
-	}
-	
-
-	unsigned int i, j;
-	double *buffer = (double *)outputBuffer;
-	double *lastValues = (double *)userData;
-	if (status)
-		std::cout << "Stream underflow detected!" << std::endl;
-
-	// Write interleaved audio data.
-	for (i = 0; i<nBufferFrames; i++) {
-
-		double value = apryx::audioSine(phase) * volume;
-
-		buffer[i * 2] = value;
-		buffer[i * 2 + 1] = value;
-
-		phase += (frequency * apryx::semitonesMultiplier(bend * 1)) / (double)requestSampleRate;
-	}
-
-	return 0;
-}
 
 class TestSource : public apryx::PCMSource{
 	double phase = 0;
 	double frequency = 440;
+
+	std::shared_ptr<apryx::MidiController> midiIn;
 public:
+	TestSource(std::shared_ptr<apryx::MidiController> midi) : midiIn(midi) {}
 
 	virtual bool get(std::vector<double> &values, apryx::AudioFormat format) 
 	{
+		for (auto &event : midiIn->poll()) {
+			if (event.isControlChange()) {
+				std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
+			}
+			if (event.isProgramChange()) {
+				std::cout << "Goto program " << event.getProgramNumber() << std::endl;
+			}
+			if (event.isNoteOn()) {
+				frequency = event.getKeyFrequency();
+			}
+		}
+
 		for (int i = 0; i < values.size() / format.channels; i++) {
 
-			double value = apryx::audioSine(phase) * 0.5;
+			double value = apryx::audioSine(phase) * 0.2;
 
 			for(int j = 0; j < format.channels; j++)
 				values[i * format.channels + j] = value;
@@ -93,10 +58,11 @@ public:
 int main() 
 {
 	using namespace apryx;
+
 	// =====================================================//
 	// Midi stuff
 	// =====================================================//
-	midiIn = std::make_shared<MidiController>();
+	auto midiIn = std::make_shared<MidiController>();
 
 	unsigned int nPorts = midiIn->getPortCount();
 	if (nPorts == 0) {
@@ -112,7 +78,7 @@ int main()
 	// =====================================================//
 
 	AudioFormat format;
-	std::shared_ptr<TestSource> source = std::make_shared<TestSource>();
+	auto source = std::make_shared<MidiSource>(midiIn);
 
 	AudioSystem system;
 
@@ -121,6 +87,7 @@ int main()
 	std::cin.get();
 }
 
+#if 0
 int main2()
 {
 	// =====================================================//
@@ -237,3 +204,5 @@ cleanup:
 
 	return 0;
 }
+
+#endif
