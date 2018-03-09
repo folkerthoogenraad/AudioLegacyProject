@@ -47,7 +47,7 @@ namespace apryx {
 
 	bool MidiEvent::isNoteOff() const
 	{
-		return isMidiMessage(m_Bytes[0], MIDI_NOTE_OFF);
+		return isMidiMessage(m_Bytes[0], MIDI_NOTE_OFF) || (isNoteOn() && getVelocity() == 0);
 	}
 
 	double MidiEvent::getVelocity() const

@@ -2,6 +2,10 @@
 
 #include "test/iir/IIRFilter.h"
 
+#include <climits>
+
+#define DOUBLE_P false
+
 namespace apryx {
 
 	static int processRTAudio(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
@@ -14,13 +18,20 @@ namespace apryx {
 		// Should be allocating this buffer, but whatever atm
 		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
-		double *buffer = (double*)outputBuffer; 
 		
 		source->get(samples, system->getAudioFormat());
 
-		for (int i = 0; i < samples.size(); i++)
+#if DOUBLE_P // Convert as double
+		double *buffer = (double*)outputBuffer;
+		for (int i = 0; i < samples.size(); i++) {
 			buffer[i] = samples[i];
-
+		}
+#else
+		short *buffer = (short*)outputBuffer;
+		for (int i = 0; i < samples.size(); i++) {
+			buffer[i] = (short) (samples[i] * SHRT_MAX);
+		}
+#endif
 		return 0;
 	}
 
@@ -46,18 +57,18 @@ namespace apryx {
 		}
 		RtAudio::StreamOptions options;
 		options.flags = RTAUDIO_MINIMIZE_LATENCY;
-		options.numberOfBuffers = 1;
+		options.numberOfBuffers = 0;
 		options.streamName = "Best stream ever.";
 
 		RtAudio::StreamParameters parameters;
-		parameters.deviceId = 0;// dac.getDefaultOutputDevice();
+		parameters.deviceId = 1;//m_Dac.getDefaultOutputDevice();// 
 		parameters.nChannels = format.channels;
 		parameters.firstChannel = 0;
 		unsigned int sampleRate = format.sampleRate;// 44100;
 		unsigned int bufferFrames = 128; // 256 sample frames
 
 		try {
-			m_Dac.openStream(&parameters, NULL, RTAUDIO_FLOAT64,
+			m_Dac.openStream(&parameters, NULL, DOUBLE_P ? RTAUDIO_FLOAT64 : RTAUDIO_SINT16,
 				sampleRate, &bufferFrames, &processRTAudio, (void *)this, &options);
 			m_Dac.startStream();
 		}

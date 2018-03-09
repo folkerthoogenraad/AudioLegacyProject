@@ -7,6 +7,7 @@
 #include "audio/PCMSource.h"
 
 #include "iir/IIRFilter.h"
+#include "iir/IIRDelay.h"
 
 namespace apryx {
 
@@ -32,17 +33,21 @@ namespace apryx {
 
 	class MidiSource : public apryx::PCMSource {
 
-		double m_EnvelopeAttack = 0.01;
+		double m_EnvelopeAttack = 0.001;
 		double m_EnvelopeDecay = 0.2;
-		double m_EnvelopeSustain = 0.7;
-		double m_EnvelopeRelease = 0.1;
+		double m_EnvelopeSustain = 0.5;
+		double m_EnvelopeRelease = 0.4;
 
 		double m_FilterRes = 0.7071;
-		double m_FilterCutoff = 2000;
+		double m_FilterCutoff = 1000;
 
-		double m_Volume = 0.7;
+		size_t m_DelaySamples = 1024;
+		double m_DelayGain = 0.5;
+
+		double m_Volume = 0.3;
 
 		IIRFilter filter;
+		IIRDelay delay;
 
 		std::shared_ptr<apryx::MidiController> m_MidiIn;
 
