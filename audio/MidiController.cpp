@@ -32,11 +32,18 @@ namespace apryx {
 			std::vector<unsigned char> message;
 			float stamp = m_MidiIn.getMessage(&message);
 
+
 			nBytes = message.size();
+			if (nBytes > 0) {
+				/*std::cout << nBytes << " : ";
+				for (int i = 0; i < nBytes; i++)
+					std::cout << "Byte (" << i << "=" << (int)message[i] << ") ";
+				std::cout << std::endl;*/
+				
+				apryx::MidiEvent event(message);
+				m_Events.push_back(event);
+			}
 
-			apryx::MidiEvent event(message);
-
-			m_Events.push_back(event);
 		} while (nBytes > 0);
 
 		return getEvents();
