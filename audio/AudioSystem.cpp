@@ -2,6 +2,10 @@
 
 #include "test/iir/IIRFilter.h"
 
+#include <climits>
+
+#define INT_P
+
 namespace apryx {
 
 	static int processRTAudio(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
@@ -14,13 +18,28 @@ namespace apryx {
 		// Should be allocating this buffer, but whatever atm
 		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
-		double *buffer = (double*)outputBuffer; 
 		
 		source->get(samples, system->getAudioFormat());
 
-		for (int i = 0; i < samples.size(); i++)
+#ifdef DOUBLE_P // Convert as double
+		double *buffer = (double*)outputBuffer;
+		for (int i = 0; i < samples.size(); i++) {
 			buffer[i] = samples[i];
+		}
+#endif
+#ifdef SHORT_P
+		short *buffer = (short*)outputBuffer;
+		for (int i = 0; i < samples.size(); i++) {
+			buffer[i] = (short)(samples[i] * SHRT_MAX);
+		}
+#endif
 
+#ifdef INT_P
+		int *buffer = (int*)outputBuffer;
+		for (int i = 0; i < samples.size(); i++) {
+			buffer[i] = (int)(samples[i] * INT_MAX);
+		}
+#endif
 		return 0;
 	}
 
@@ -37,6 +56,8 @@ namespace apryx {
 		m_Source = source;
 		m_AudioFormat = format;
 
+		//m_Dac = RtAudio(RtAudio::Api::WINDOWS_ASIO);
+
 		int deviceCount = m_Dac.getDeviceCount();
 
 		if (deviceCount < 1) {
@@ -50,14 +71,23 @@ namespace apryx {
 		options.streamName = "Best stream ever.";
 
 		RtAudio::StreamParameters parameters;
-		parameters.deviceId = 1;// dac.getDefaultOutputDevice();
+		parameters.deviceId = 0;// dac.getDefaultOutputDevice();
 		parameters.nChannels = format.channels;
-		parameters.firstChannel = 1;
+		parameters.firstChannel = 0;
 		unsigned int sampleRate = format.sampleRate;// 44100;
 		unsigned int bufferFrames = 128; // 256 sample frames
 
 		try {
-			m_Dac.openStream(&parameters, NULL, RTAUDIO_FLOAT64,
+#ifdef DOUBLE_P
+			int format = RTAUDIO_FLOAT64;
+#endif
+#ifdef SHORT_P
+			int format = RTAUDIO_SINT16;
+#endif
+#ifdef INT_P
+			int format = RTAUDIO_SINT32;
+#endif
+			m_Dac.openStream(&parameters, NULL, format,
 				sampleRate, &bufferFrames, &processRTAudio, (void *)this, &options);
 			m_Dac.startStream();
 		}

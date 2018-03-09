@@ -25,5 +25,8 @@
     <ClInclude Include="iir\IIRFilter.h">
       <Filter>iir</Filter>
     </ClInclude>
+    <ClInclude Include="iir\IIRDelay.h">
+      <Filter>iir</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace apryx {
 		for (auto &event : m_MidiIn->poll()) {
 
 			if (event.isControlChange()) {
-				//std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
+				std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
 			}
 			if (event.isProgramChange()) {
 				std::cout << "Goto program " << event.getProgramNumber() << std::endl;
@@ -26,6 +26,8 @@ namespace apryx {
 				voice.envelopeTimer = 0;
 				voice.velocity = event.getVelocity();
 				voice.frequency = event.getKeyFrequency();
+
+				std::cout << voice.key << std::endl;
 
 				m_Voices.push_back(voice);
 			}
@@ -53,6 +55,19 @@ namespace apryx {
 					double r = remap(0, 1, 0.7071, 10, f * f * f);
 
 					m_FilterRes = r;
+				}
+
+				if (event.getControlIndex() == 5) {
+
+					double r = remap(0, 1, 200, 5000, f * f);
+
+					m_DelaySamples = (size_t)r;
+				}
+
+				if (event.getControlIndex() == 6) {
+
+					double r = remap(0, 1, -1, 1, f);
+					m_DelayGain = r;
 				}
 			}
 		}
@@ -111,15 +126,18 @@ namespace apryx {
 
 		}
 
+		delay.setDelay(m_DelaySamples);
+		delay.setFeedback(m_DelayGain);
 		filter.setFilter(IIRFilter::LowPass, m_FilterCutoff / (double)format.sampleRate, m_FilterRes, 0);
 
 		for (int i = 0; i < values.size() / format.channels; i++) {
-			double oldValue = values[i * format.channels];
+			double value = values[i * format.channels];
 
-			double newValue = filter.process(oldValue);
+			value = filter.process(value);
+			//value = delay.process(value);
 
 			for (int j = 0; j < format.channels; j++)
-				values[i * format.channels + j] = newValue;
+				values[i * format.channels + j] = value;
 		}
 	
 

@@ -132,6 +132,7 @@
     <ClCompile Include="MidiSource.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="iir\IIRDelay.h" />
     <ClInclude Include="iir\IIRFilter.h" />
     <ClInclude Include="MidiSource.h" />
   </ItemGroup>
