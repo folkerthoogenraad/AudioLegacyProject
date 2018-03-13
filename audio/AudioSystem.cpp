@@ -2,6 +2,8 @@
 
 #include "test/iir/IIRFilter.h"
 
+#include "AudioUtils.h"
+
 #include <climits>
 
 #define INT_P
@@ -37,7 +39,7 @@ namespace apryx {
 #ifdef INT_P
 		int *buffer = (int*)outputBuffer;
 		for (int i = 0; i < samples.size(); i++) {
-			buffer[i] = (int)(samples[i] * INT_MAX);
+			buffer[i] = (int)(apryx::audioClamp(samples[i], -1, 1) * INT_MAX);
 		}
 #endif
 		return 0;

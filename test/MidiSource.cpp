@@ -12,10 +12,10 @@ namespace apryx {
 		for (auto &event : m_MidiIn->poll()) {
 
 			if (event.isControlChange()) {
-				std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
+				//std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
 			}
 			if (event.isProgramChange()) {
-				std::cout << "Goto program " << event.getProgramNumber() << std::endl;
+				//std::cout << "Goto program " << event.getProgramNumber() << std::endl;
 			}
 
 			if (event.isNoteOn()) {
@@ -26,8 +26,6 @@ namespace apryx {
 				voice.envelopeTimer = 0;
 				voice.velocity = event.getVelocity();
 				voice.frequency = event.getKeyFrequency();
-
-				std::cout << voice.key << std::endl;
 
 				m_Voices.push_back(voice);
 			}
@@ -112,7 +110,15 @@ namespace apryx {
 				volume = audioClamp(volume);
 
 				// Create the final output
-				double value = apryx::audioSawtooth(voice.wavePhase) * volume * m_Volume * toGain(-(1 - voice.velocity) * 30);
+				double gain = volume * m_Volume * toGain(-(1 - voice.velocity) * 30);
+				double value = apryx::audioSawtooth(voice.wavePhase) * gain;
+
+				value = (
+					apryx::audioSine(voice.wavePhase) + 
+					apryx::audioSine(voice.wavePhase*1.99) + 
+					apryx::audioSine(voice.wavePhase*3) + 
+					apryx::audioSine(voice.wavePhase*4)
+					) * 0.5 * gain;
 
 				// Write the values
 				for (int j = 0; j < format.channels; j++)
