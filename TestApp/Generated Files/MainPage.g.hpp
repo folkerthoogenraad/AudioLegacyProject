@@ -25,8 +25,25 @@ void ::TestApp::MainPage::InitializeComponent()
 
 void ::TestApp::MainPage::Connect(int __connectionId, ::Platform::Object^ __target)
 {
-    __connectionId;         // unreferenced 
-    __target;               // unreferenced
+    switch (__connectionId)
+    {
+        case 1:
+            {
+                ::Windows::UI::Xaml::Controls::Slider^ element1 = safe_cast<::Windows::UI::Xaml::Controls::Slider^>(__target);
+                (safe_cast<::Windows::UI::Xaml::Controls::Slider^>(element1))->PointerPressed += ref new ::Windows::UI::Xaml::Input::PointerEventHandler(this, (void (::TestApp::MainPage::*)
+                    (::Platform::Object^, ::Windows::UI::Xaml::Input::PointerRoutedEventArgs^))&MainPage::Button_Click);
+            }
+            break;
+        case 2:
+            {
+                ::Windows::UI::Xaml::Controls::Canvas^ element2 = safe_cast<::Windows::UI::Xaml::Controls::Canvas^>(__target);
+                (safe_cast<::Windows::UI::Xaml::Controls::Canvas^>(element2))->PointerReleased += ref new ::Windows::UI::Xaml::Input::PointerEventHandler(this, (void (::TestApp::MainPage::*)
+                    (::Platform::Object^, ::Windows::UI::Xaml::Input::PointerRoutedEventArgs^))&MainPage::Button_Release);
+                (safe_cast<::Windows::UI::Xaml::Controls::Canvas^>(element2))->PointerPressed += ref new ::Windows::UI::Xaml::Input::PointerEventHandler(this, (void (::TestApp::MainPage::*)
+                    (::Platform::Object^, ::Windows::UI::Xaml::Input::PointerRoutedEventArgs^))&MainPage::Button_Click);
+            }
+            break;
+    }
     _contentLoaded = true;
 }
 

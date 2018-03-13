@@ -8,8 +8,9 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Slider HorizontalAlignment="Left" Margin="445,192,0,0" VerticalAlignment="Top" Height="44" Width="424" PointerPressed="Button_Click"/>
+        <Slider x:ConnectionId='1' HorizontalAlignment="Left" Margin="445,192,0,0" VerticalAlignment="Top" Height="44" Width="424"                              />
         <Button Content="Button" HorizontalAlignment="Left" Margin="432,269,0,0" VerticalAlignment="Top" Height="191" Width="427"/>
-        <Canvas HorizontalAlignment="Left" Height="214" Margin="428,483,0,0" VerticalAlignment="Top" Width="443" Background="Black" PointerReleased="Button_Release" PointerPressed="Button_Click"/>
+        <Canvas x:ConnectionId='2' HorizontalAlignment="Left" Height="214" Margin="428,483,0,0" VerticalAlignment="Top" Width="443" Background="Black"                                                               />
     </Grid>
 </Page>
+

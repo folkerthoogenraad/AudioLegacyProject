@@ -7,6 +7,18 @@
 
 #include "MainPage.g.h"
 
+#include "audio/AudioSystem.h"
+
+namespace apryx {
+	class TestSource : public apryx::PCMSource {
+	public:
+		double phase;
+		bool playing = false;
+	public:
+		virtual bool get(std::vector<double> &values, apryx::AudioFormat format);
+	};
+}
+
 namespace TestApp
 {
 	/// <summary>
@@ -17,5 +29,8 @@ namespace TestApp
 	public:
 		MainPage();
 
+		void Button_Click(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
+		void Button_Release(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 	};
+
 }
