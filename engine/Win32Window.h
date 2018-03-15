@@ -14,6 +14,8 @@ namespace apryx {
 
 		float m_DPIScale = 1;
 	public:
+		bool m_Touched = false;
+
 		Win32Window(std::string title, int width = 640, int height = 480, bool full = false);
 
 		void setVisible(bool visible);

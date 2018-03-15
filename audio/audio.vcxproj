@@ -133,6 +133,7 @@
     <ClInclude Include="MidiEvent.h" />
     <ClInclude Include="PCMMixer.h" />
     <ClInclude Include="PCMSource.h" />
+    <ClInclude Include="PCMTestSource.h" />
     <ClInclude Include="rtaudio\asio.h" />
     <ClInclude Include="rtaudio\asiodrivers.h" />
     <ClInclude Include="rtaudio\asiodrvr.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="AudioUtils.cpp" />
     <ClCompile Include="MidiController.cpp" />
     <ClCompile Include="MidiEvent.cpp" />
+    <ClCompile Include="PCMTestSource.cpp" />
     <ClCompile Include="rtaudio\asio.cpp" />
     <ClCompile Include="rtaudio\asiodrivers.cpp" />
     <ClCompile Include="rtaudio\asiolist.cpp" />

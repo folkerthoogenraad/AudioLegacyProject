@@ -73,7 +73,7 @@ namespace apryx {
 		options.streamName = "Best stream ever.";
 
 		RtAudio::StreamParameters parameters;
-		parameters.deviceId = 1;// m_Dac.getDefaultOutputDevice();
+		parameters.deviceId = 0;// m_Dac.getDefaultOutputDevice();
 		parameters.nChannels = format.channels;
 		parameters.firstChannel = 0;
 		unsigned int sampleRate = format.sampleRate;// 44100;
