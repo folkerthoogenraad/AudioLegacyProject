@@ -69,11 +69,11 @@ namespace apryx {
 		}
 		RtAudio::StreamOptions options;
 		options.flags = RTAUDIO_MINIMIZE_LATENCY;
-		options.numberOfBuffers = 0;
+		options.numberOfBuffers = 1;
 		options.streamName = "Best stream ever.";
 
 		RtAudio::StreamParameters parameters;
-		parameters.deviceId = 2;// dac.getDefaultOutputDevice();
+		parameters.deviceId = 0;// dac.getDefaultOutputDevice();
 		parameters.nChannels = format.channels;
 		parameters.firstChannel = 0;
 		unsigned int sampleRate = format.sampleRate;// 44100;

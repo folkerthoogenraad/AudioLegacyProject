@@ -12,13 +12,12 @@
 namespace apryx {
 	class TestSource : public apryx::PCMSource {
 	public:
-		double phase;
 		bool playing = false;
-	public:
-		virtual bool get(std::vector<double> &values, apryx::AudioFormat format);
+		double phase = 0;
+
+		virtual bool get(std::vector<double> &values, AudioFormat format);
 	};
 }
-
 namespace TestApp
 {
 	/// <summary>
@@ -26,6 +25,9 @@ namespace TestApp
 	/// </summary>
 	public ref class MainPage sealed
 	{
+		std::shared_ptr<apryx::AudioSystem> m_System;
+		std::shared_ptr<apryx::TestSource> m_Source;
+
 	public:
 		MainPage();
 

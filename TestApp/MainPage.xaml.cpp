@@ -24,36 +24,44 @@ using namespace apryx;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-static std::shared_ptr<apryx::AudioSystem> m_System;
-static std::shared_ptr<apryx::TestSource> m_Source;
+
 
 MainPage::MainPage()
-{ }
+{ 
+	auto r = Windows::Foundation::Initialize(RO_INIT_MULTITHREADED);
+
+	InitializeComponent();
+
+	AudioFormat format;
+
+	m_System = std::make_shared<AudioSystem>();
+	m_Source = std::make_shared<TestSource>();
+
+	AudioSystem system;
+
+	system.play(format, m_Source);
+	
+}
 
 void TestApp::MainPage::Button_Click(Platform::Object ^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	if (m_System == nullptr) {
-		AudioFormat format;
-
-		m_System = std::make_shared<AudioSystem>();
-		m_Source = std::make_shared<TestSource>();
-
-		AudioSystem system;
-
-		system.play(format, m_Source);
+	if (m_Source != nullptr) {
+		m_Source->playing = true;
+		m_Source->phase = 0;
 	}
-
-	m_Source->playing = true;
-	m_Source->phase = 0;
 }
 
 void TestApp::MainPage::Button_Release(Platform::Object ^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	m_Source->playing = false;
+	if (m_Source != nullptr) {
+		m_Source->playing = false;
+	}
 }
 
 bool apryx::TestSource::get(std::vector<double> &values, apryx::AudioFormat format)
 {
+	std::cout << "moeder" << std::endl;
+
 	if (!playing)
 		return false;
 
