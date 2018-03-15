@@ -76,6 +76,7 @@ namespace apryx {
 		// Make sure its the client size
 		RECT wr = { 0, 0, m_Width, m_Height};    // set the size, but not the position
 		AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
+		RegisterTouchWindow(m_Hwnd, 0);
 
 		m_Hwnd = CreateWindowEx(
 			0,                              // Optional window styles.
@@ -165,11 +166,44 @@ namespace apryx {
 
 	LRESULT Win32Window::handleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam)
 	{
-		if (message == WM_CLOSE) {
-			m_CloseRequested = true;
-		}
+		switch (message)
+		{
+		case WM_TOUCH:
+		{
+			int touchCount = LOWORD(wParam);
+			HTOUCHINPUT hInput = (HTOUCHINPUT)lParam;
+			TOUCHINPUT *pInputs = new TOUCHINPUT[touchCount];
 
-		else if (message == WM_SIZE) {
+			// Get each touch input info and feed each 
+			// tagTOUCHINPUT into the process input handler.
+
+			if (pInputs != NULL)
+			{
+				if (GetTouchInputInfo(hInput, touchCount,
+					pInputs, sizeof(TOUCHINPUT)))
+				{
+					for (int i = 0; i < touchCount; i++)
+					{
+						// Bring touch input info into client coordinates.
+						float x = pInputs[i].x / 100.0f;
+						float y = pInputs[i].y / 100.0f;
+
+						// figutre out if this is needed
+						//ScreenToClient(g_hWnd, &ptInputs);
+
+						std::cout << i << ": " << x << " " << y << std::endl;
+					}
+				}
+			}
+
+			delete[] pInputs;
+			break;
+		}
+		case WM_CLOSE:
+			m_CloseRequested = true;
+			break;
+
+		case WM_SIZE:
 			int width = LOWORD(lParam);  // Macro to get the low-order word. 
 			int height = HIWORD(lParam); // Macro to get the high-order word. 
 
@@ -177,6 +211,7 @@ namespace apryx {
 			m_Height = height;
 
 			m_Resized = true;
+			break;
 		}
 
 		return DefWindowProc(m_Hwnd, message, wParam, lParam);

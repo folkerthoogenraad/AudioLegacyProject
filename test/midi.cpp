@@ -1,4 +1,6 @@
 
+// Holy moly clean this shit up bro
+
 #include <iostream>
 #include <cstdlib>
 #include <signal.h>
@@ -18,45 +20,27 @@
 
 #include "MidiSource.h"
 
+#include "engine/Win32Window.h"
 
+#include <iostream>
 
-class TestSource : public apryx::PCMSource{
-	double phase = 0;
-	double frequency = 440;
+#include "engine/GLShaderProgram.h"
+#include "engine/GLVertexBufferObject.h"
 
-	std::shared_ptr<apryx::MidiController> midiIn;
-public:
-	TestSource(std::shared_ptr<apryx::MidiController> midi) : midiIn(midi) {}
+#include "engine/GL.h"
 
-	virtual bool get(std::vector<double> &values, apryx::AudioFormat format) 
-	{
-		for (auto &event : midiIn->poll()) {
-			if (event.isControlChange()) {
-				std::cout << event.getControlIndex() << " = " << event.getControlValue() << std::endl;
-			}
-			if (event.isProgramChange()) {
-				std::cout << "Goto program " << event.getProgramNumber() << std::endl;
-			}
-			if (event.isNoteOn()) {
-				frequency = event.getKeyFrequency();
-			}
-		}
+#include "math/Matrix4.h"
 
-		for (int i = 0; i < values.size() / format.channels; i++) {
+#include "engine/Image.h"
+#include "engine/GLTexture.h"
 
-			double value = apryx::audioSine(phase) * 0.2;
+#include "engine/Timer.h"
 
-			for(int j = 0; j < format.channels; j++)
-				values[i * format.channels + j] = value;
-
-			phase += frequency / (double)format.sampleRate;
-		}
-		return true;
-	};
-};
+#define GRAPHICS_ONLY false
 
 int main() 
 {
+#if !GRAPHICS_ONLY
 	using namespace apryx;
 
 	// =====================================================//
@@ -72,7 +56,6 @@ int main()
 
 	midiIn->openPort(0);
 
-
 	// =====================================================//
 	// Audio stuff
 	// =====================================================//
@@ -84,125 +67,125 @@ int main()
 
 	system.play(format, source);
 
-	std::cin.get();
-}
-
-#if 0
-int main2()
-{
-	// =====================================================//
-	// RTMidi stuff
-	// =====================================================//
-	midiIn = std::make_shared<apryx::MidiController>();
-
-	unsigned int nPorts = midiIn->getPortCount();
-	if (nPorts == 0) {
-		std::cout << "No ports available!\n";
-		return -1;
-	}
-
-	midiIn->openPort(0);
-
-
-	// =====================================================//
-	// RTAudio stuff
-	// =====================================================//
-	RtAudio dac;
-
-	int deviceCount = dac.getDeviceCount();
-	auto info = dac.getDeviceInfo(0);
-
-	std::cout << info.name << std::endl;
-
-	if (deviceCount < 1) {
-		std::cout << "\nNo audio devices found!\n";
-		std::cin.get();
-		exit(0);
-	}
-	RtAudio::StreamOptions options;
-	options.flags = RTAUDIO_MINIMIZE_LATENCY;
-	options.numberOfBuffers = 1;
-	options.streamName = "Best stream ever.";
-
-	RtAudio::StreamParameters parameters;
-	parameters.deviceId = 0;// dac.getDefaultOutputDevice();
-	parameters.nChannels = 2;
-	parameters.firstChannel = 0;
-	unsigned int sampleRate = requestSampleRate;// 44100;
-	unsigned int bufferFrames = 128; // 256 sample frames
-	double data[2];
-	try {
-		dac.openStream(&parameters, NULL, RTAUDIO_FLOAT64,
-			sampleRate, &bufferFrames, &saw, (void *)&data, &options);
-		dac.startStream();
-	}
-	catch (RtAudioError& e) {
-		e.printMessage();
-		std::cin.get();
-		exit(0);
-	}
-
-	char input;
-	std::cout << "\nPlaying ... press <enter> to quit.\n";
-	std::cin.get(input);
-	try {
-		// Stop the stream
-		dac.stopStream();
-	}
-	catch (RtAudioError& e) {
-		e.printMessage();
-	}
-	if (dac.isStreamOpen()) dac.closeStream();
-
-	return 0;
-}
-
-
-
-
-int midi()
-{
-	RtMidiIn *midiin = new RtMidiIn();
-	std::vector<unsigned char> message;
-	int nBytes, i;
-	double stamp;
-
-	// Check available ports.
-	unsigned int nPorts = midiin->getPortCount();
-	if (nPorts == 0) {
-		std::cout << "No ports available!\n";
-		goto cleanup;
-	}
-	midiin->openPort(0);
-
-	// Don't ignore sysex, timing, or active sensing messages.
-	midiin->ignoreTypes(false, false, false);
-
-	// Periodically check input queue.
-	std::cout << "Reading MIDI from port ... quit with Ctrl-C.\n";
-	while (true) {
-		bool cont = true;
-		while (cont) {
-			stamp = midiin->getMessage(&message);
-
-			nBytes = message.size();
-			for (i = 0; i < nBytes; i++)
-				std::cout << "Byte " << i << " = " << ((int)message[i]) << std::dec <<  ", ";
-			if (nBytes > 0)
-				std::cout << "stamp = " << stamp << std::endl;
-			if (nBytes == 0)
-				cont = false;
-		}
-		apryx::Timer::sleep(1/60.f);
-	}
-
-	// Clean up
-cleanup:
-	delete midiin;
-
-	std::cin.get();
-
-	return 0;
-}
-
 #endif
+
+	// =====================================================//
+	// Graphics stuff
+	// =====================================================//
+
+	using namespace apryx;
+
+	Win32Window window("OpenGL", 1280, 720, false);
+
+	glClearColor(1, 1, 1, 1);
+
+	Timer timer;
+	double timeSum = 0;
+	int frameCount = 0;
+
+	GLShaderProgram program(
+		GLShader(GLShader::Vertex, VERTEX_DEFAULT_SOURCE),
+		GLShader(GLShader::Fragment, FRAGMENT_UNLIT_TEXTURE));
+
+	Image image = Image::checkerboard(16, 16);
+
+	GLTexture texture;
+	texture.setFiltering(GLTexture::NearestNeighbour);
+	texture.setWrapping(GLTexture::Clamp);
+
+	texture.setData(image);
+
+	texture.bind();
+
+	program.use();
+
+	int matrixModel = program.getUniformLocation(SHADER_MATRIX_MODEL);
+	int matrixView = program.getUniformLocation(SHADER_MATRIX_VIEW);
+	int matrixProjection = program.getUniformLocation(SHADER_MATRIX_PROJECTION);
+
+	int textureLocation = program.getUniformLocation(SHADER_MAIN_TEXTURE);
+
+	program.setUniform(matrixView, Matrix4f::translation(0, 0, 2));
+	program.setUniform(matrixProjection, Matrix4f::perspective(60, 16.f / 9.f, 0.1f, 1000.f));
+
+	program.setUniform(textureLocation, 0);
+
+	float vertices[] = {
+		0.0f,  0.5f, 0, // Vertex 1 (X, Y)
+		0.5f, -0.5f, 0, // Vertex 2 (X, Y)
+		-0.5f, -0.5f, 0  // Vertex 3 (X, Y)
+	};
+
+	float colors[] = {
+		1,0,0,1,
+		0,1,0,1,
+		0,0,1,1
+	};
+
+	float uvs[] = {
+		0.5f, 1,
+		0, 0,
+		1, 0,
+	};
+
+	GLVertexBufferObject vertexBuffer;
+	vertexBuffer.setBufferData(GLVertexBufferObject::Static, sizeof(vertices), vertices);
+
+	vertexBuffer.bind();
+
+	glVertexAttribPointer(SHADER_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(SHADER_POSITION_LOCATION);
+
+
+	GLVertexBufferObject colorBuffer;
+	colorBuffer.setBufferData(GLVertexBufferObject::Static, sizeof(colors), colors);
+
+	colorBuffer.bind();
+
+	glVertexAttribPointer(SHADER_COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(SHADER_COLOR_LOCATION);
+
+
+	GLVertexBufferObject uvBuffer;
+	uvBuffer.setBufferData(GLVertexBufferObject::Static, sizeof(uvs), uvs);
+
+	uvBuffer.bind();
+
+	glVertexAttribPointer(SHADER_UV_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(SHADER_UV_LOCATION);
+
+	checkGLError();
+
+	window.setVisible(true);
+
+	timer.start();
+
+	while (!window.isCloseRequested()) {
+		window.poll();
+
+		if (window.isResized()) {
+			glViewport(0, 0, window.getWidth(), window.getHeight());
+		}
+
+		program.setUniform(matrixModel, Matrix4f::rotationY(timeSum * 360));
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
+		timeSum += timer.lap();
+		frameCount++;
+		if (timeSum > 1) {
+			std::cout << "FPS : " << frameCount << std::endl;
+			frameCount = 0;
+			timeSum -= 1;
+		}
+
+		window.swap();
+		Timer::sleep(1 / 60.f);
+	}
+
+	window.destroy();
+
+	return 0;
+}
