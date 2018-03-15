@@ -1,5 +1,7 @@
 #include "Win32Window.h"
 
+#include <Windowsx.h>
+
 #include "GL.h"
 
 #define CLASS_NAME "Win32WindowOpenGL"
@@ -168,36 +170,14 @@ namespace apryx {
 	{
 		switch (message)
 		{
-		case WM_TOUCH:
+		case WM_POINTERDOWN:
 		{
-			int touchCount = LOWORD(wParam);
-			HTOUCHINPUT hInput = (HTOUCHINPUT)lParam;
-			TOUCHINPUT *pInputs = new TOUCHINPUT[touchCount];
+			//https://msdn.microsoft.com/en-us/library/hh454928(v=vs.85).aspx
 
-			// Get each touch input info and feed each 
-			// tagTOUCHINPUT into the process input handler.
+			int px = GET_X_LPARAM(lParam);
+			int py = GET_Y_LPARAM(lParam);
 
-			if (pInputs != NULL)
-			{
-				if (GetTouchInputInfo(hInput, touchCount,
-					pInputs, sizeof(TOUCHINPUT)))
-				{
-					for (int i = 0; i < touchCount; i++)
-					{
-						// Bring touch input info into client coordinates.
-						float x = pInputs[i].x / 100.0f;
-						float y = pInputs[i].y / 100.0f;
-
-						// figutre out if this is needed
-						//ScreenToClient(g_hWnd, &ptInputs);
-
-						std::cout << i << ": " << x << " " << y << std::endl;
-					}
-				}
-			}
-
-			delete[] pInputs;
-			break;
+			std::cout << px << " " << py << std::endl;
 		}
 		case WM_CLOSE:
 			m_CloseRequested = true;

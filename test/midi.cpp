@@ -36,7 +36,7 @@
 
 #include "engine/Timer.h"
 
-#define GRAPHICS_ONLY false
+#define GRAPHICS_ONLY true
 
 int main() 
 {
