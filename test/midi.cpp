@@ -39,7 +39,7 @@
 
 #include "engine/Timer.h"
 
-#include "engine/SpriteBatch.h"
+#include "engine/GLBatch.h"
 
 #define GRAPHICS_ONLY true
 
@@ -82,7 +82,7 @@ int main()
 	int frameCount = 0;
 
 
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0, 0, 1, 1);
 
 	Image image = Image::checkerboard(16, 16);
 
@@ -91,10 +91,11 @@ int main()
 	texture.setWrapping(GLTexture::Clamp);
 
 	texture.setData(image);
+	texture.unbind();
 
 	window.setVisible(true);
 
-	SpriteBatch batch;
+	GLBatch batch;
 
 	timer.start();
 

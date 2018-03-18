@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Image.h"
+#include "Texture.h"
 
 namespace apryx {
 
-	class GLTexture {
+	class GLTexture : public Texture{
 		unsigned int m_ID;
 	public:
 		enum WrappingMode {
@@ -25,7 +25,8 @@ namespace apryx {
 		void setFiltering(TextureFiltering filtering);
 		void setWrapping(WrappingMode wrapping);
 
-		void setData(const Image &image);
+		// TODO use some caching or something to find the correct width and height yafeelme
+		void setData(const Image &image) override;
 	};
 
 }

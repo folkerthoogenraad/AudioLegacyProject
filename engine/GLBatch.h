@@ -16,7 +16,7 @@
 
 namespace apryx {
 
-	class SpriteBatch {
+	class GLBatch {
 	public:
 		struct Vertex {
 			Vector3f vertex;
@@ -44,7 +44,7 @@ namespace apryx {
 		Matrix4f m_MatrixView;
 		Matrix4f m_MatrixProjection;
 	public:
-		SpriteBatch();
+		GLBatch();
 
 		void begin();
 		void end();

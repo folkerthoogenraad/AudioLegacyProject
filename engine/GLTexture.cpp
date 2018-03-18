@@ -1,5 +1,6 @@
 #include "GLTexture.h"
 
+#include "Image.h"
 #include "GL.h"
 
 namespace apryx {
