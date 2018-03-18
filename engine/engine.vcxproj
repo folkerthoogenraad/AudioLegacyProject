@@ -151,12 +151,15 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawableRectangle.h" />
     <ClInclude Include="GL.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="GLShaderProgram.h" />
     <ClInclude Include="GLTexture.h" />
     <ClInclude Include="GLVertexBufferObject.h" />
+    <ClInclude Include="Graphics2D.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="Paint.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Win32Window.h" />
     <ClInclude Include="Window.h" />

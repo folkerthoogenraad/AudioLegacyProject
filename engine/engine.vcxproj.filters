@@ -57,6 +57,15 @@
     <ClInclude Include="Image.h">
       <Filter>graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics2D.h">
+      <Filter>graphics\api</Filter>
+    </ClInclude>
+    <ClInclude Include="Paint.h">
+      <Filter>graphics\api</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawableRectangle.h">
+      <Filter>graphics\api</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="win32">
@@ -70,6 +79,9 @@
     </Filter>
     <Filter Include="time">
       <UniqueIdentifier>{7a0f78d0-cd36-4067-94a2-4f2abb83cefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics\api">
+      <UniqueIdentifier>{cba15beb-5aa7-42ba-a4fe-44bd16c506c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -34,6 +34,8 @@
 #include "engine/Image.h"
 #include "engine/GLTexture.h"
 
+#include "engine/Graphics2D.h"
+
 #include "engine/Timer.h"
 
 #define GRAPHICS_ONLY true
