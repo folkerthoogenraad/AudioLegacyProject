@@ -3,6 +3,8 @@
 #include <array>
 #include <memory>
 
+#include "math/Matrix4.h"	// Matrix4f
+
 #include "math/Vector4.h"	// Color32
 
 #include "math/Vector3.h"	// Vector3f
@@ -32,12 +34,25 @@ namespace apryx {
 
 		GLShaderProgram m_Program;
 		GLVertexBufferObject m_VertexBufferObject;
+
+		int m_MatrixModelIndex = -1;
+		int m_MatrixViewIndex = -1;
+		int m_MatrixProjectionIndex = -1;
+		int m_TextureLocation = -1;
+
+		Matrix4f m_MatrixModel;
+		Matrix4f m_MatrixView;
+		Matrix4f m_MatrixProjection;
 	public:
 		SpriteBatch();
 
 		void begin();
 		void end();
 		void flush();
+
+		void setMatrixModel(Matrix4f matrix);
+		void setMatrixView(Matrix4f matrix);
+		void setMatrixProjection(Matrix4f matrix);
 
 		void vertex(Vector3f vertex);
 		void uv(Vector2f uv);

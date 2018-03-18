@@ -146,12 +146,13 @@
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="GLShaderProgram.cpp" />
     <ClCompile Include="GLVertexBufferObject.cpp" />
+    <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Win32Window.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DrawableRectangle.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="GL.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="GLShaderProgram.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Graphics2D.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Paint.h" />
+    <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Win32Window.h" />
     <ClInclude Include="Window.h" />

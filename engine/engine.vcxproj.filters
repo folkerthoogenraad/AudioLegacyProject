@@ -28,6 +28,9 @@
     <ClCompile Include="Image.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteBatch.cpp">
+      <Filter>graphics\api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -63,7 +66,10 @@
     <ClInclude Include="Paint.h">
       <Filter>graphics\api</Filter>
     </ClInclude>
-    <ClInclude Include="DrawableRectangle.h">
+    <ClInclude Include="Font.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBatch.h">
       <Filter>graphics\api</Filter>
     </ClInclude>
   </ItemGroup>
