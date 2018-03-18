@@ -11,6 +11,7 @@
 #include "audio/AudioUtils.h"
 
 #include "audio/MidiController.h"
+#include "audio/PCMTestSource.h"
 #include "engine/Timer.h"
 
 #include "audio/rtaudio/RtAudio.h"
@@ -38,7 +39,7 @@
 
 #include "engine/Timer.h"
 
-#define GRAPHICS_ONLY true
+#define GRAPHICS_ONLY false
 
 int main() 
 {
@@ -48,6 +49,7 @@ int main()
 	// =====================================================//
 	// Midi stuff
 	// =====================================================//
+#if 0
 	auto midiIn = std::make_shared<MidiController>();
 
 	unsigned int nPorts = midiIn->getPortCount();
@@ -57,13 +59,14 @@ int main()
 	}
 
 	midiIn->openPort(0);
+#endif
 
 	// =====================================================//
 	// Audio stuff
 	// =====================================================//
 
 	AudioFormat format;
-	auto source = std::make_shared<MidiSource>(midiIn);
+	auto source = std::make_shared<PCMTestSource>();
 
 	AudioSystem system;
 
@@ -164,9 +167,13 @@ int main()
 
 	while (!window.isCloseRequested()) {
 		window.poll();
-
+		
 		if (window.isResized()) {
 			glViewport(0, 0, window.getWidth(), window.getHeight());
+		}
+
+		if (window.m_Touched) {
+			source->setPlaying(!source->isPlaying());
 		}
 
 		program.setUniform(matrixModel, Matrix4f::rotationY(timeSum * 360));
@@ -184,7 +191,7 @@ int main()
 		}
 
 		window.swap();
-		Timer::sleep(1 / 60.f);
+		Timer::sleep(1 / 240.f);
 	}
 
 	window.destroy();

@@ -174,11 +174,16 @@ namespace apryx {
 		{
 			//https://msdn.microsoft.com/en-us/library/hh454928(v=vs.85).aspx
 
-			int px = GET_X_LPARAM(lParam);
-			int py = GET_Y_LPARAM(lParam);
 
-			std::cout << px << " " << py << std::endl;
+			POINT point;
+			point.x = GET_X_LPARAM(lParam);
+			point.y = GET_Y_LPARAM(lParam);
+
+			ScreenToClient(m_Hwnd, &point);
+
+			m_Touched = true;
 		}
+		break;
 		case WM_CLOSE:
 			m_CloseRequested = true;
 			break;
@@ -212,6 +217,7 @@ namespace apryx {
 	{
 		m_CloseRequested = false;
 		m_Resized = false;
+		m_Touched = false;
 
 
 		MSG msg = {};
