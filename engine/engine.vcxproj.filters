@@ -7,29 +7,29 @@
     <ClCompile Include="Window.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="GLShader.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="GLShaderProgram.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="GLVertexBufferObject.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="GL.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>time</Filter>
-    </ClCompile>
-    <ClCompile Include="GLTexture.cpp">
-      <Filter>opengl</Filter>
     </ClCompile>
     <ClCompile Include="Image.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteBatch.cpp">
-      <Filter>graphics\api</Filter>
+    <ClCompile Include="GL.cpp">
+      <Filter>opengl\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShader.cpp">
+      <Filter>opengl\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShaderProgram.cpp">
+      <Filter>opengl\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="GLTexture.cpp">
+      <Filter>opengl\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="GLVertexBufferObject.cpp">
+      <Filter>opengl\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="GLBatch.cpp">
+      <Filter>opengl\api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,38 +39,44 @@
     <ClInclude Include="Window.h">
       <Filter>graphics</Filter>
     </ClInclude>
-    <ClInclude Include="GLShader.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="GLShaderProgram.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="GLVertexBufferObject.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="GL.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>time</Filter>
-    </ClInclude>
-    <ClInclude Include="GLTexture.h">
-      <Filter>opengl</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
       <Filter>graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics2D.h">
-      <Filter>graphics\api</Filter>
-    </ClInclude>
-    <ClInclude Include="Paint.h">
-      <Filter>graphics\api</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>graphics</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteBatch.h">
-      <Filter>graphics\api</Filter>
+    <ClInclude Include="Graphics2D.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsContext.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Paint.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GL.h">
+      <Filter>opengl\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShader.h">
+      <Filter>opengl\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShaderProgram.h">
+      <Filter>opengl\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="GLTexture.h">
+      <Filter>opengl\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="GLVertexBufferObject.h">
+      <Filter>opengl\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="GLBatch.h">
+      <Filter>opengl\api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,8 +92,11 @@
     <Filter Include="time">
       <UniqueIdentifier>{7a0f78d0-cd36-4067-94a2-4f2abb83cefe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="graphics\api">
-      <UniqueIdentifier>{cba15beb-5aa7-42ba-a4fe-44bd16c506c2}</UniqueIdentifier>
+    <Filter Include="opengl\wrapper">
+      <UniqueIdentifier>{54787de2-880c-4e23-b492-421c327db528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\api">
+      <UniqueIdentifier>{31b3e91e-2d74-4d45-94de-5964dc175f62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

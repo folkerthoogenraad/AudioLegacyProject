@@ -21,6 +21,7 @@ namespace apryx {
 
 		return m_Colors[x + y * m_Width];
 	}
+
 	Image Image::checkerboard(int width, int height, Color32 a, Color32 b)
 	{
 		Image image(width, height);

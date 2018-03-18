@@ -1,10 +1,10 @@
-#include "SpriteBatch.h"
+#include "GLBatch.h"
 
 #include "engine/GL.h"
 
 namespace apryx {
 
-	SpriteBatch::SpriteBatch()
+	GLBatch::GLBatch()
 		: m_Program(
 			GLShader(GLShader::Vertex, VERTEX_DEFAULT_SOURCE),
 			GLShader(GLShader::Fragment, FRAGMENT_UNLIT_TEXTURE))
@@ -23,7 +23,7 @@ namespace apryx {
 		m_MatrixProjection = Matrix4f::identity();
 	}
 
-	void SpriteBatch::begin()
+	void GLBatch::begin()
 	{
 		if (m_Drawing)
 			return;
@@ -31,7 +31,7 @@ namespace apryx {
 		m_Drawing = true;
 		m_Index = 0;
 	}
-	void SpriteBatch::end()
+	void GLBatch::end()
 	{
 		if (!m_Drawing)
 			return;
@@ -39,7 +39,7 @@ namespace apryx {
 		flush();
 		m_Drawing = false;
 	}
-	void SpriteBatch::flush()
+	void GLBatch::flush()
 	{
 		if (!m_Drawing) {
 			m_Index = 0; // This is actually a bit of a hack
@@ -80,25 +80,25 @@ namespace apryx {
 		m_Index = 0;
 	}
 
-	void SpriteBatch::setMatrixModel(Matrix4f matrix)
+	void GLBatch::setMatrixModel(Matrix4f matrix)
 	{
 		flush();
 		m_MatrixModel = matrix;
 	}
 
-	void SpriteBatch::setMatrixView(Matrix4f matrix)
+	void GLBatch::setMatrixView(Matrix4f matrix)
 	{
 		flush();
 		m_MatrixView = matrix;
 	}
 
-	void SpriteBatch::setMatrixProjection(Matrix4f matrix)
+	void GLBatch::setMatrixProjection(Matrix4f matrix)
 	{
 		flush();
 		m_MatrixProjection = matrix;
 	}
 
-	void SpriteBatch::texture(std::shared_ptr<GLTexture> texture)
+	void GLBatch::texture(std::shared_ptr<GLTexture> texture)
 	{
 		if (texture == m_Texture)
 			return;
@@ -108,7 +108,7 @@ namespace apryx {
 		flush();
 	}
 
-	void SpriteBatch::vertex(Vector3f vertex)
+	void GLBatch::vertex(Vector3f vertex)
 	{
 		m_CurrentVertex.vertex = vertex;
 
@@ -120,12 +120,12 @@ namespace apryx {
 			flush();
 	}
 
-	void SpriteBatch::uv(Vector2f uv)
+	void GLBatch::uv(Vector2f uv)
 	{
 		m_CurrentVertex.uv = uv;
 	}
 
-	void SpriteBatch::color(Color32 color)
+	void GLBatch::color(Color32 color)
 	{
 		m_CurrentVertex.color = color;
 	}
