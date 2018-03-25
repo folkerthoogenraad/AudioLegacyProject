@@ -83,7 +83,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO___;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -118,7 +118,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO___;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,6 +129,7 @@
     <ClInclude Include="AudioFormat.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="AudioUtils.h" />
+    <ClInclude Include="Distortion.h" />
     <ClInclude Include="MidiController.h" />
     <ClInclude Include="MidiEvent.h" />
     <ClInclude Include="PCMMixer.h" />
@@ -152,8 +153,10 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="AudioUtils.cpp" />
+    <ClCompile Include="Distortion.cpp" />
     <ClCompile Include="MidiController.cpp" />
     <ClCompile Include="MidiEvent.cpp" />
+    <ClCompile Include="PCMSource.cpp" />
     <ClCompile Include="PCMTestSource.cpp" />
     <ClCompile Include="rtaudio\asio.cpp" />
     <ClCompile Include="rtaudio\asiodrivers.cpp" />

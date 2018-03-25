@@ -41,6 +41,8 @@
 
 #include "engine/GLBatch.h"
 
+#include "audio/Distortion.h"
+
 #define GRAPHICS_ONLY true
 
 int main() 
@@ -61,19 +63,38 @@ int main()
 
 	midiIn->openPort(0);
 
+#endif
+
+	using namespace apryx;
+
 	// =====================================================//
 	// Audio stuff
 	// =====================================================//
 
 	AudioFormat format;
+
 	auto source = std::make_shared<PCMTestSource>();
+
+
 
 	AudioSystem system;
 
 	system.play(format, source);
+	source->setPlaying(true);
+	source->setFrequency(440);
+	source->setGain(1);
 
-#endif
-	using namespace apryx;
+
+	Distortion *dist;
+	{
+		auto distortion = std::make_unique<Distortion>();
+
+		distortion->setAlgorithm(Distortion::SineFold);
+
+		// Idk dude
+		dist = (Distortion*) source->addEffect(std::move(distortion));
+	}
+
 
 	Win32Window window("OpenGL", 1280, 720, false);
 
@@ -106,6 +127,7 @@ int main()
 			glViewport(0, 0, window.getWidth(), window.getHeight());
 		}
 
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		batch.begin();
@@ -127,6 +149,16 @@ int main()
 		batch.vertex(Vector3f(1, 0));
 
 		batch.end();
+
+		dist->setPreAmp(
+			remap(
+				-1, 1,
+				1, 5,
+				audioSine(
+					timer.runtime() * 0.1
+				)
+			)
+		);
 
 		timeSum += timer.lap();
 		frameCount++;

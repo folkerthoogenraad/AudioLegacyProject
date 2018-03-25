@@ -21,7 +21,7 @@ namespace apryx {
 		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
 		
-		source->get(samples, system->getAudioFormat());
+		source->processSamples(samples, system->getAudioFormat());
 
 #ifdef DOUBLE_P // Convert as double
 		double *buffer = (double*)outputBuffer;
@@ -73,7 +73,7 @@ namespace apryx {
 		options.streamName = "Best stream ever.";
 
 		RtAudio::StreamParameters parameters;
-		parameters.deviceId = 0;// m_Dac.getDefaultOutputDevice();
+		parameters.deviceId = m_Dac.getDefaultOutputDevice();
 		parameters.nChannels = format.channels;
 		parameters.firstChannel = 0;
 		unsigned int sampleRate = format.sampleRate;// 44100;
