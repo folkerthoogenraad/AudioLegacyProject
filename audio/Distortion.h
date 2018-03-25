@@ -9,6 +9,7 @@ namespace apryx {
 	public:
 		enum Algorithm {
 			HardClip,
+			SoftClip,
 
 			SineFold,
 		};

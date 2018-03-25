@@ -42,6 +42,10 @@
 #include "engine/GLBatch.h"
 
 #include "audio/Distortion.h"
+#include "audio/BitCrusher.h"
+
+#include "audio/WaveFile.h"
+#include "audio/PCMClipSource.h"
 
 #define GRAPHICS_ONLY true
 
@@ -71,30 +75,41 @@ int main()
 	// Audio stuff
 	// =====================================================//
 
+	auto file = std::make_shared<WaveFile>("wav/Snap.wav");
+
 	AudioFormat format;
 
-	auto source = std::make_shared<PCMTestSource>();
-
-
+	auto source = std::make_shared<PCMClipSource>(file);
 
 	AudioSystem system;
 
 	system.play(format, source);
+
 	source->setPlaying(true);
-	source->setFrequency(440);
+	source->setLooping(true);
 	source->setGain(1);
 
+
+
+	BitCrusher *crush;
+	{
+		auto crusher = std::make_unique<BitCrusher>();
+
+		crusher->setSteps(1);
+
+		// Idk dude
+		crush = (BitCrusher*)source->addEffect(std::move(crusher));
+	}
 
 	Distortion *dist;
 	{
 		auto distortion = std::make_unique<Distortion>();
 
-		distortion->setAlgorithm(Distortion::SineFold);
+		distortion->setAlgorithm(Distortion::HardClip);
 
 		// Idk dude
-		dist = (Distortion*) source->addEffect(std::move(distortion));
+		dist = (Distortion*)source->addEffect(std::move(distortion));
 	}
-
 
 	Win32Window window("OpenGL", 1280, 720, false);
 
@@ -153,12 +168,23 @@ int main()
 		dist->setPreAmp(
 			remap(
 				-1, 1,
-				1, 5,
+				1, 4,
 				audioSine(
-					timer.runtime() * 0.1
+					timer.runtime() * 0.1563
 				)
 			)
 		);
+
+		crush->setSteps(
+			remap(
+				-1, 1,
+				1, 4,
+				audioSine(
+					timer.runtime() * 0.43223
+				)
+			)
+		);
+		
 
 		timeSum += timer.lap();
 		frameCount++;
