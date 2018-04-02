@@ -73,6 +73,14 @@ int main()
 
 	midiIn->openPort(0);
 
+	AudioFormat format;
+
+	AudioSystem system;
+	
+	auto midiSource = std::make_shared<MidiSource>(midiIn);
+
+	system.play(format, midiSource);
+
 #endif
 
 	using namespace apryx;

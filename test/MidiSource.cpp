@@ -119,17 +119,12 @@ namespace apryx {
 				double gain = volume * m_Volume * toGain(-(1 - voice.velocity) * 30);
 				double value = apryx::audioSawtooth(voice.wavePhase) * gain;
 
-				/*value = (
+				value = (
 					apryx::audioSine(voice.wavePhase) + 
 					apryx::audioSine(voice.wavePhase*1.99) + 
 					apryx::audioSine(voice.wavePhase*3) + 
 					apryx::audioSine(voice.wavePhase*4)
-					) * 0.5 * gain;*/
-				value = (
-					apryx::audioSawtooth(voice.wavePhase) +
-					apryx::audioSawtooth(voice.wavePhase* pow(2, (1 - m_Detune))) +
-					apryx::audioSawtooth(voice.wavePhase* pow(2, (1 + m_Detune)))
-					) / 3.0 * gain;
+					) * gain;
 
 				// Write the values
 				for (int j = 0; j < format.channels; j++)
