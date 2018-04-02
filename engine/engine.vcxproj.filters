@@ -31,6 +31,12 @@
     <ClCompile Include="GLBatch.cpp">
       <Filter>opengl\api</Filter>
     </ClCompile>
+    <ClCompile Include="GLGraphicsContext.cpp">
+      <Filter>opengl\api</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics2D.cpp">
+      <Filter>opengl\api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -76,6 +82,12 @@
       <Filter>opengl\wrapper</Filter>
     </ClInclude>
     <ClInclude Include="GLBatch.h">
+      <Filter>opengl\api</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics2D.h">
+      <Filter>opengl\api</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphicsContext.h">
       <Filter>opengl\api</Filter>
     </ClInclude>
   </ItemGroup>

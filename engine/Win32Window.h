@@ -12,16 +12,23 @@ namespace apryx {
 		bool m_CloseRequested;
 		bool m_Resized;
 
+		int m_Width;
+		int m_Height;
+
 		float m_DPIScale = 1;
 	public:
-		bool m_Touched = false;
-
 		Win32Window(std::string title, int width = 640, int height = 480, bool full = false);
 
-		void setVisible(bool visible);
+		void setVisible(bool visible, bool maximize = false);
 
 		bool isResized() const override;
 		bool isCloseRequested() const override;
+
+		float getWidth() const override;
+		float getHeight() const override;
+
+		int getRawWidth() const { return m_Width; }
+		int getRawHeight() const { return m_Height; }
 
 		LRESULT handleWindowsMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 

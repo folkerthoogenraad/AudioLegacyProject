@@ -22,6 +22,18 @@ namespace apryx{
 		return secondsPerBeat * beatsPerBar;
 	}
 
+	size_t toSamples(double seconds, AudioFormat format)
+	{
+		size_t monoSamples = (size_t) (seconds * format.sampleRate);
+
+		return monoSamples * format.channels;
+	}
+
+	double gainFalloff(double distance)
+	{
+		return 1.0 / (distance * distance);
+	}
+
 	double semitonesMultiplier(double semitones)
 	{
 		return pow(2, semitones / 12.0);

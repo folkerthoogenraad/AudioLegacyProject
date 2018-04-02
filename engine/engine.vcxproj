@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GL.cpp" />
+    <ClCompile Include="GLGraphics2D.cpp" />
+    <ClCompile Include="GLGraphicsContext.cpp" />
     <ClCompile Include="GLTexture.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="GLShader.cpp" />
@@ -154,6 +156,8 @@
   <ItemGroup>
     <ClInclude Include="Font.h" />
     <ClInclude Include="GL.h" />
+    <ClInclude Include="GLGraphics2D.h" />
+    <ClInclude Include="GLGraphicsContext.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="GLShaderProgram.h" />
     <ClInclude Include="GLTexture.h" />

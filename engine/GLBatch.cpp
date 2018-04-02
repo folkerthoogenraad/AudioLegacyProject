@@ -46,6 +46,9 @@ namespace apryx {
 			return;
 		}
 
+		if (m_Index == 0)
+			return;
+
 		// Upload the data
 		m_VertexBufferObject.setBufferSubData(0, sizeof(Vertex) * m_Index, &m_Vertices[0]);
 
@@ -98,14 +101,24 @@ namespace apryx {
 		m_MatrixProjection = matrix;
 	}
 
+	void GLBatch::setSize(float width, float height) 
+	{
+		setMatrixProjection(Matrix4f::orthographic(0, width, height, 0, -10, 10));
+	}
+
 	void GLBatch::texture(std::shared_ptr<GLTexture> texture)
 	{
 		if (texture == m_Texture)
 			return;
 
-		m_Texture = texture;
-		
 		flush();
+
+		m_Texture = texture;
+	}
+
+	void GLBatch::vertex(Vector2f v)
+	{
+		vertex(Vector3f(v.x, v.y, 0));
 	}
 
 	void GLBatch::vertex(Vector3f vertex)

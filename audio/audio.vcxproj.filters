@@ -13,6 +13,15 @@
     <Filter Include="midi">
       <UniqueIdentifier>{c4e066d4-28ba-4dd4-bf5c-d8890d81e504}</UniqueIdentifier>
     </Filter>
+    <Filter Include="audio\effects">
+      <UniqueIdentifier>{b03cc8a3-4467-48cd-ae42-586ffb73fe3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\sources">
+      <UniqueIdentifier>{750966f4-4fa9-4bb2-b578-93c98f771945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\clips">
+      <UniqueIdentifier>{94995df4-0a7d-44bb-a40d-5c2839ac68c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rtmidi\RtMidi.cpp">
@@ -46,8 +55,32 @@
       <Filter>midi</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystem.cpp" />
-    <ClCompile Include="PCMTestSource.cpp">
+    <ClCompile Include="PCMSource.cpp">
       <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="PCMTestSource.cpp">
+      <Filter>audio\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Distortion.cpp">
+      <Filter>audio\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveFile.cpp">
+      <Filter>audio\clips</Filter>
+    </ClCompile>
+    <ClCompile Include="PCMClipSource.cpp">
+      <Filter>audio\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BitCrusher.cpp">
+      <Filter>audio\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceDelay.cpp">
+      <Filter>audio\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="PCMMixer.cpp">
+      <Filter>audio\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="PCMDelay.cpp">
+      <Filter>audio\sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,14 +141,35 @@
     <ClInclude Include="AudioFormat.h">
       <Filter>audio</Filter>
     </ClInclude>
-    <ClInclude Include="PCMMixer.h">
-      <Filter>audio</Filter>
-    </ClInclude>
     <ClInclude Include="AudioSystem.h">
       <Filter>audio</Filter>
     </ClInclude>
     <ClInclude Include="PCMTestSource.h">
+      <Filter>audio\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Distortion.h">
+      <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMClip.h">
       <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveFile.h">
+      <Filter>audio\clips</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMClipSource.h">
+      <Filter>audio\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="BitCrusher.h">
+      <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceDelay.h">
+      <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMDelay.h">
+      <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMMixer.h">
+      <Filter>audio\sources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

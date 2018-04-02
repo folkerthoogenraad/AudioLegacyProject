@@ -21,7 +21,7 @@ namespace apryx {
 		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
 		
-		source->get(samples, system->getAudioFormat());
+		source->processSamples(samples, system->getAudioFormat());
 
 #ifdef DOUBLE_P // Convert as double
 		double *buffer = (double*)outputBuffer;
@@ -46,6 +46,7 @@ namespace apryx {
 	}
 
 	AudioSystem::AudioSystem()
+		:m_Dac(RtAudio(RtAudio::Api::WINDOWS_ASIO))
 	{ }
 
 	AudioSystem::~AudioSystem()
@@ -58,8 +59,6 @@ namespace apryx {
 		m_Source = source;
 		m_AudioFormat = format;
 
-		//m_Dac = RtAudio(RtAudio::Api::WINDOWS_ASIO);
-
 		int deviceCount = m_Dac.getDeviceCount();
 
 		if (deviceCount < 1) {
@@ -67,15 +66,23 @@ namespace apryx {
 			std::cin.get();
 			exit(0);
 		}
+
+		RtAudio::DeviceInfo info = m_Dac.getDeviceInfo(m_Dac.getDefaultOutputDevice());
+
+		std::cout << info.preferredSampleRate << " -> " << format.sampleRate << std::endl;
+		std::cout << info.outputChannels << " -> " << format.channels << std::endl;
+
 		RtAudio::StreamOptions options;
 		options.flags = RTAUDIO_MINIMIZE_LATENCY;
 		options.numberOfBuffers = 0;
 		options.streamName = "Best stream ever.";
 
 		RtAudio::StreamParameters parameters;
-		parameters.deviceId = 0;// m_Dac.getDefaultOutputDevice();
+
+		parameters.deviceId = m_Dac.getDefaultOutputDevice();
 		parameters.nChannels = format.channels;
 		parameters.firstChannel = 0;
+
 		unsigned int sampleRate = format.sampleRate;// 44100;
 		unsigned int bufferFrames = 128; // 256 sample frames
 

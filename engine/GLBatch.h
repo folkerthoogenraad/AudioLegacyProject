@@ -54,6 +54,9 @@ namespace apryx {
 		void setMatrixView(Matrix4f matrix);
 		void setMatrixProjection(Matrix4f matrix);
 
+		void setSize(float width, float height);
+
+		void vertex(Vector2f vertex);
 		void vertex(Vector3f vertex);
 		void uv(Vector2f uv);
 		void color(Color32 color);

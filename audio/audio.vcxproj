@@ -83,7 +83,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO__;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -118,7 +118,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__WINDOWS_ASIO__;__WINDOWS_WASAPI__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,8 +129,13 @@
     <ClInclude Include="AudioFormat.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="AudioUtils.h" />
+    <ClInclude Include="BitCrusher.h" />
+    <ClInclude Include="Distortion.h" />
     <ClInclude Include="MidiController.h" />
     <ClInclude Include="MidiEvent.h" />
+    <ClInclude Include="PCMClip.h" />
+    <ClInclude Include="PCMClipSource.h" />
+    <ClInclude Include="PCMDelay.h" />
     <ClInclude Include="PCMMixer.h" />
     <ClInclude Include="PCMSource.h" />
     <ClInclude Include="PCMTestSource.h" />
@@ -148,12 +153,20 @@
     <ClInclude Include="rtaudio\soundcard.h" />
     <ClInclude Include="rtmidi\RtMidi.h" />
     <ClInclude Include="rtmidi\rtmidi_c.h" />
+    <ClInclude Include="SpaceDelay.h" />
+    <ClInclude Include="WaveFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="AudioUtils.cpp" />
+    <ClCompile Include="BitCrusher.cpp" />
+    <ClCompile Include="Distortion.cpp" />
     <ClCompile Include="MidiController.cpp" />
     <ClCompile Include="MidiEvent.cpp" />
+    <ClCompile Include="PCMClipSource.cpp" />
+    <ClCompile Include="PCMDelay.cpp" />
+    <ClCompile Include="PCMMixer.cpp" />
+    <ClCompile Include="PCMSource.cpp" />
     <ClCompile Include="PCMTestSource.cpp" />
     <ClCompile Include="rtaudio\asio.cpp" />
     <ClCompile Include="rtaudio\asiodrivers.cpp" />
@@ -162,6 +175,8 @@
     <ClCompile Include="rtaudio\RtAudio.cpp" />
     <ClCompile Include="rtmidi\RtMidi.cpp" />
     <ClCompile Include="rtmidi\rtmidi_c.cpp" />
+    <ClCompile Include="SpaceDelay.cpp" />
+    <ClCompile Include="WaveFile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

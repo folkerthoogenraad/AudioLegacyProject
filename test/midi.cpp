@@ -41,11 +41,23 @@
 
 #include "engine/GLBatch.h"
 
-#define GRAPHICS_ONLY true
+#include "audio/Distortion.h"
+#include "audio/BitCrusher.h"
+#include "audio/SpaceDelay.h"
+
+#include "audio/WaveFile.h"
+#include "audio/PCMClipSource.h"
+
+#include "audio/PCMDelay.h"
+#include "audio/PCMMixer.h"
+
+#include "engine/GLGraphicsContext.h"
+
+#define MIDI_STUFF false
 
 int main() 
 {
-#if !GRAPHICS_ONLY
+#if MIDI_STUFF
 	using namespace apryx;
 
 	// =====================================================//
@@ -61,41 +73,41 @@ int main()
 
 	midiIn->openPort(0);
 
+#endif
+
+	using namespace apryx;
+
 	// =====================================================//
 	// Audio stuff
 	// =====================================================//
 
-	AudioFormat format;
-	auto source = std::make_shared<PCMTestSource>();
-
-	AudioSystem system;
-
-	system.play(format, source);
-
-#endif
-	using namespace apryx;
-
 	Win32Window window("OpenGL", 1280, 720, false);
+
+	auto context = std::make_shared<GLGraphicsContext>();
+
+	auto graphics = context->createGraphics();
+
+	float dpi = window.dpiScale();
 
 	Timer timer;
 	double timeSum = 0;
+	double frameSum = 0;
+	int updateCount = 0;
 	int frameCount = 0;
-
 
 	glClearColor(0, 0, 1, 1);
 
 	Image image = Image::checkerboard(16, 16);
 
-	GLTexture texture;
-	texture.setFiltering(GLTexture::NearestNeighbour);
-	texture.setWrapping(GLTexture::Clamp);
-
-	texture.setData(image);
-	texture.unbind();
-
-	window.setVisible(true);
+	window.setVisible(true, true);
 
 	GLBatch batch;
+	{
+		glViewport(0, 0, window.getRawWidth(), window.getRawHeight());
+		batch.setSize(window.getWidth(), window.getHeight());
+		graphics->setSize(window.getWidth(), window.getHeight());
+	}
+
 
 	timer.start();
 
@@ -103,42 +115,45 @@ int main()
 		window.poll();
 
 		if (window.isResized()) {
-			glViewport(0, 0, window.getWidth(), window.getHeight());
+			glViewport(0, 0, window.getRawWidth(), window.getRawHeight());
+			batch.setSize(window.getWidth(), window.getHeight());
+			graphics->setSize(window.getWidth(), window.getHeight());
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		batch.begin();
-
-		batch.color(Color32::white());
-
-		batch.uv(Vector2f(0, 0));
-		batch.vertex(Vector3f(0, 0));
-
-		batch.uv(Vector2f(0, 1));
-		batch.vertex(Vector3f(0, 1));
-
-		batch.color(Color32::red());
-
-		batch.uv(Vector2f(1, 1));
-		batch.vertex(Vector3f(1, 1));
-
-		batch.uv(Vector2f(1, 0));
-		batch.vertex(Vector3f(1, 0));
-
-		batch.end();
-
-		timeSum += timer.lap();
-		frameCount++;
+		double delta = timer.lap();
+		
+		frameSum += delta * 20;
+		timeSum += delta;
 		if (timeSum > 1) {
-			std::cout << "FPS : " << frameCount << " " << timeSum << std::endl;
+			std::cout << "FPS : " << frameCount << " | UPS : " << updateCount << std::endl;
 			frameCount = 0;
 			timeSum -= 1;
+			updateCount = 0;
 		}
 
-		window.swap();
-		Timer::sleep(1 / 240.f);
-}
+		updateCount++;
+
+		if (frameSum > 1) {
+			frameSum -= 1;
+			frameCount++;
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			Paint redPaint;
+			redPaint.setColor(Color32::red());
+
+			Paint whitePaint;
+			whitePaint.setColor(Color32::white());
+
+			graphics->drawRectangle(redPaint, Rectanglef::centered(256, 256, 128, 128));
+			graphics->drawImage(whitePaint, image, Vector2f(0,0));
+
+			graphics->flush();
+			window.swap();
+		}
+
+		Timer::sleep(1 / 20.0);
+	}
 
 	window.destroy();
 
