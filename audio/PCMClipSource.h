@@ -22,7 +22,9 @@ namespace apryx {
 		void setGain(double gain) { m_Gain = gain; }
 		double getGain() const { return m_Gain; }
 
-		void setPlaying(bool p) { m_Playing = p; }
+		void play() { m_Playing = true; }
+		void stop() { m_Playing = false; m_Index = 0; }
+		void pause() { m_Playing = false; }
 		bool isPlaying() const { return m_Playing; }
 
 		void setLooping(bool p) { m_Loop = p; }

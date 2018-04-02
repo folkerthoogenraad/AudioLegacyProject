@@ -12,6 +12,8 @@ namespace apryx {
 		if (x < 0 || x > m_Width || y < 0 || y > m_Height)
 			return;
 
+		m_Dirty = true;
+
 		m_Colors[x + y * m_Width] = color;
 	}
 	Color32 Image::getColor(int x, int y)
@@ -20,6 +22,16 @@ namespace apryx {
 			return Color32(0, 0, 0, 1);
 
 		return m_Colors[x + y * m_Width];
+	}
+
+	void Image::upload(GraphicsContext & context)
+	{
+		if (m_Texture == nullptr) {
+			m_Texture = context.createTexture();
+		}
+
+		m_Texture->setData(*this);
+		m_Dirty = false;
 	}
 
 	Image Image::checkerboard(int width, int height, Color32 a, Color32 b)

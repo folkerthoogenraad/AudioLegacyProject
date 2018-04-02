@@ -5,8 +5,6 @@
 namespace apryx {
 	class Window {
 	protected:
-		int m_Width;
-		int m_Height;
 		std::string m_Title;
 		bool m_Fullscreen;
 	public:
@@ -21,7 +19,7 @@ namespace apryx {
 
 		virtual float dpiScale() const { return 1; }
 
-		int getWidth() const { return m_Width; }
-		int getHeight() const { return m_Height; }
+		virtual float getWidth() const = 0;
+		virtual float getHeight() const = 0;
 	};
 }

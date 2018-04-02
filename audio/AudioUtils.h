@@ -21,10 +21,17 @@
 #include <complex> // For fft and ifft
 #include <vector>
 
+#include "AudioFormat.h"
+
 namespace apryx {
 	double toGain(double db);
 	double toDB(double gain);
 	double toBarSeconds(double bpm, double beatsPerBar);
+
+	size_t toSamples(double seconds, AudioFormat format);
+
+	// Falloff in normalized distance (1 distance = normal gain)
+	double gainFalloff(double distance);
 
 	double semitonesMultiplier(double semitones);
 	double intervalMultiplier(double from, double to);

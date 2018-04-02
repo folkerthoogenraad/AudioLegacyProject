@@ -70,7 +70,18 @@
     <ClCompile Include="PCMClipSource.cpp">
       <Filter>audio\sources</Filter>
     </ClCompile>
-    <ClCompile Include="BitCrusher.cpp" />
+    <ClCompile Include="BitCrusher.cpp">
+      <Filter>audio\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceDelay.cpp">
+      <Filter>audio\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="PCMMixer.cpp">
+      <Filter>audio\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="PCMDelay.cpp">
+      <Filter>audio\sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rtmidi\RtMidi.h">
@@ -130,9 +141,6 @@
     <ClInclude Include="AudioFormat.h">
       <Filter>audio</Filter>
     </ClInclude>
-    <ClInclude Include="PCMMixer.h">
-      <Filter>audio</Filter>
-    </ClInclude>
     <ClInclude Include="AudioSystem.h">
       <Filter>audio</Filter>
     </ClInclude>
@@ -153,6 +161,15 @@
     </ClInclude>
     <ClInclude Include="BitCrusher.h">
       <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceDelay.h">
+      <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMDelay.h">
+      <Filter>audio\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="PCMMixer.h">
+      <Filter>audio\sources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

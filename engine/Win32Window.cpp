@@ -71,12 +71,15 @@ namespace apryx {
 	Win32Window::Win32Window(std::string title, int width, int height, bool full)
 		: Window(title,width,height,full)
 	{
+		m_Width = width;
+		m_Height = height;
+
 		SetProcessDPIAware();
 
 		registerClass();
 
 		// Make sure its the client size
-		RECT wr = { 0, 0, m_Width, m_Height};    // set the size, but not the position
+		RECT wr = { 0, 0, width, height};    // set the size, but not the position
 		AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
 		RegisterTouchWindow(m_Hwnd, 0);
 
@@ -109,14 +112,14 @@ namespace apryx {
 		int pixelFormat;
 
 		HDC deviceContext = GetDC(m_Hwnd);
-
-		// Get the device scaling stuff
-		m_DPIScale = GetDeviceCaps(deviceContext, LOGPIXELSX) / 96.f;
 		
 		if (!deviceContext) {
 			MessageBox(NULL, "Failed to obtain the device context.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 			return;                               // Return FALSE
 		}
+
+		// Get the device scaling stuff
+		m_DPIScale = GetDeviceCaps(deviceContext, LOGPIXELSX) / 96.f;
 
 		pixelFormat = ChoosePixelFormat(deviceContext, &descriptor);
 
@@ -151,9 +154,17 @@ namespace apryx {
 		initGL();
 	}
 
-	void Win32Window::setVisible(bool visible)
+	void Win32Window::setVisible(bool visible, bool maximize)
 	{
-		ShowWindow(m_Hwnd, visible ? SW_SHOW : SW_HIDE);
+		if (maximize && visible) {
+			ShowWindow(m_Hwnd, SW_MAXIMIZE);
+		}
+		else if (visible) {
+			ShowWindow(m_Hwnd, SW_SHOW);
+		}
+		else if (!visible) {
+			ShowWindow(m_Hwnd, SW_HIDE);
+		}
 	}
 
 	bool Win32Window::isResized() const
@@ -164,6 +175,16 @@ namespace apryx {
 	bool Win32Window::isCloseRequested() const
 	{
 		return m_CloseRequested;
+	}
+
+	float Win32Window::getWidth() const
+	{
+		return m_Width / m_DPIScale;
+	}
+
+	float Win32Window::getHeight() const
+	{
+		return m_Height / m_DPIScale;
 	}
 
 	LRESULT Win32Window::handleWindowsMessage(UINT message, WPARAM wParam, LPARAM lParam)
@@ -181,7 +202,6 @@ namespace apryx {
 
 			ScreenToClient(m_Hwnd, &point);
 
-			m_Touched = true;
 		}
 		break;
 		case WM_CLOSE:
@@ -217,7 +237,6 @@ namespace apryx {
 	{
 		m_CloseRequested = false;
 		m_Resized = false;
-		m_Touched = false;
 
 
 		MSG msg = {};
