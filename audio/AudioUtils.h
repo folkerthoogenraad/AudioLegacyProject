@@ -43,6 +43,8 @@ namespace apryx {
 	double audioTriangle(double input);
 	double audioSquare(double input);
 
+	double audioMix(double in1, double in2);
+
 	double random();
 
 	double midiToFrequency(int midiKey);

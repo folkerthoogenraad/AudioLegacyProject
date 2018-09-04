@@ -26,7 +26,7 @@ namespace apryx {
 		double frequency;
 
 		double velocity;
-
+		bool enabled = false;
 
 		int key;
 	};
@@ -36,7 +36,7 @@ namespace apryx {
 		double m_EnvelopeAttack = 0.001;
 		double m_EnvelopeDecay = 0.1;
 		double m_EnvelopeSustain = 0.4;
-		double m_EnvelopeRelease = 0.1;
+		double m_EnvelopeRelease = 1;
 
 		double m_FilterRes = 0.7071;
 		double m_FilterCutoff = 1000;
@@ -54,8 +54,9 @@ namespace apryx {
 		std::shared_ptr<apryx::MidiController> m_MidiIn;
 
 		std::vector<MidiVoice> m_Voices;
+		int m_CurrentVoiceIndex;
 	public:
-		MidiSource(std::shared_ptr<apryx::MidiController> midi) : m_MidiIn(midi) {}
+		MidiSource(std::shared_ptr<apryx::MidiController> midi);
 
 
 		virtual bool get(std::vector<double> &values, AudioFormat format);

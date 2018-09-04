@@ -9,6 +9,8 @@
     <ClCompile Include="iir\IIRFilter.cpp">
       <Filter>iir</Filter>
     </ClCompile>
+    <ClCompile Include="CombEffect.cpp" />
+    <ClCompile Include="iir\Grainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Midi">
@@ -16,6 +18,9 @@
     </Filter>
     <Filter Include="iir">
       <UniqueIdentifier>{0ba9860c-f089-4af0-8024-3046d38c3f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="synthesis">
+      <UniqueIdentifier>{c7b0b75e-51e1-4077-ba1f-992384b3d0c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +31,15 @@
       <Filter>iir</Filter>
     </ClInclude>
     <ClInclude Include="iir\IIRDelay.h">
+      <Filter>iir</Filter>
+    </ClInclude>
+    <ClInclude Include="CombEffect.h">
+      <Filter>Midi</Filter>
+    </ClInclude>
+    <ClInclude Include="Wavetable.h">
+      <Filter>synthesis</Filter>
+    </ClInclude>
+    <ClInclude Include="iir\Grainer.h">
       <Filter>iir</Filter>
     </ClInclude>
   </ItemGroup>

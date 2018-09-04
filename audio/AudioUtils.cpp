@@ -81,6 +81,11 @@ namespace apryx{
 		return v > 0.5 ? 1 : -1;
 	}
 
+	double audioMix(double a, double b)
+	{
+		return a + b - a * b;
+	}
+
 	double midiToFrequency(int midiKey)
 	{
 		return pow(2, (midiKey - 69) / 12.f) * 440;

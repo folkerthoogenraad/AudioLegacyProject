@@ -5,8 +5,9 @@
 #include "AudioUtils.h"
 
 #include <climits>
+#include <Windows.h>
 
-#define INT_P
+#define FLOAT_P
 
 namespace apryx {
 
@@ -18,28 +19,44 @@ namespace apryx {
 		const auto &source = system->getSource();
 
 		// Should be allocating this buffer, but whatever atm
-		std::vector<double> samples(nBufferFrames * system->getAudioFormat().channels);
 
-		
-		source->processSamples(samples, system->getAudioFormat());
+		int wantedSize = nBufferFrames * system->getAudioFormat().channels;
+
+		if (system->m_Buffer.size() != wantedSize) {
+			system->m_Buffer.resize(wantedSize);
+
+			std::cout << "Setting stuff" << std::endl;
+
+			SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST | THREAD_PRIORITY_TIME_CRITICAL);
+		}
+
+		std::fill(system->m_Buffer.begin(), system->m_Buffer.end(), 0);
+
+		source->processSamples(system->m_Buffer, system->getAudioFormat());
 
 #ifdef DOUBLE_P // Convert as double
 		double *buffer = (double*)outputBuffer;
-		for (int i = 0; i < samples.size(); i++) {
-			buffer[i] = samples[i];
+		for (int i = 0; i < system->m_Buffer.size(); i++) {
+			buffer[i] = system->m_Buffer[i];
+		}
+#endif
+#ifdef FLOAT_P // Convert as double
+		float *buffer = (float*)outputBuffer;
+		for (int i = 0; i < system->m_Buffer.size(); i++) {
+			buffer[i] = (float)system->m_Buffer[i];
 		}
 #endif
 #ifdef SHORT_P
 		short *buffer = (short*)outputBuffer;
-		for (int i = 0; i < samples.size(); i++) {
-			buffer[i] = (short)(samples[i] * SHRT_MAX);
+		for (int i = 0; i < system->m_Buffer.size(); i++) {
+			buffer[i] = (short)(system->m_Buffer[i] * SHRT_MAX);
 		}
 #endif
 
 #ifdef INT_P
 		int *buffer = (int*)outputBuffer;
-		for (int i = 0; i < samples.size(); i++) {
-			buffer[i] = (int)(apryx::audioClamp(samples[i], -1, 1) * INT_MAX);
+		for (int i = 0; i < system->m_Buffer.size(); i++) {
+			buffer[i] = (int)(apryx::audioClamp(system->m_Buffer[i], -1, 1) * INT_MAX);
 		}
 #endif
 		return 0;
@@ -84,7 +101,7 @@ namespace apryx {
 		parameters.firstChannel = 0;
 
 		unsigned int sampleRate = format.sampleRate;// 44100;
-		unsigned int bufferFrames = 128; // 256 sample frames
+		unsigned int bufferFrames = 256; // 256 sample frames
 
 		try {
 #ifdef DOUBLE_P
@@ -95,6 +112,9 @@ namespace apryx {
 #endif
 #ifdef INT_P
 			int format = RTAUDIO_SINT32;
+#endif
+#ifdef FLOAT_P
+			int format = RTAUDIO_FLOAT32;
 #endif
 			m_Dac.openStream(&parameters, NULL, format,
 				sampleRate, &bufferFrames, &processRTAudio, (void *)this, &options);

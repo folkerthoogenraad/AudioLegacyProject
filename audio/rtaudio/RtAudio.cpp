@@ -3620,7 +3620,7 @@ static long asioMessages( long selector, long value, void* /*message*/, double* 
     // This will inform the host application that the drivers were
     // latencies changed.  Beware, it this does not mean that the
     // buffer sizes have changed!  You might need to update internal
-    // delay data.
+    // delay1 data.
     std::cerr << "\nRtApiAsio: driver latency may have changed!!!" << std::endl;
     ret = 1L;
     break;

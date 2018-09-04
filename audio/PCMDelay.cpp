@@ -2,9 +2,10 @@
 
 namespace apryx {
 	
-	PCMDelay::PCMDelay()
+	PCMDelay::PCMDelay(size_t samples, float feedback)
+		: m_Feedback(feedback)
 	{
-		setDelaySamples(500);
+		setDelaySamples(samples);
 	}
 
 	void PCMDelay::setDelaySamples(size_t samples)

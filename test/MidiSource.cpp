@@ -5,7 +5,12 @@
 #include "math/math.h"
 
 namespace apryx {
-
+	MidiSource::MidiSource(std::shared_ptr<apryx::MidiController> midi)
+		: m_MidiIn(midi)
+	{
+		m_Voices.resize(20);
+		m_CurrentVoiceIndex = 0;
+	}
 	bool MidiSource::get(std::vector<double>& values, AudioFormat format)
 	{
 		// Process the midi events.
@@ -26,8 +31,11 @@ namespace apryx {
 				voice.envelopeTimer = 0;
 				voice.velocity = event.getVelocity();
 				voice.frequency = event.getKeyFrequency();
+				voice.enabled = true;
 
-				m_Voices.push_back(voice);
+				m_Voices[m_CurrentVoiceIndex++] = voice;
+				if (m_CurrentVoiceIndex >= m_Voices.size())
+					m_CurrentVoiceIndex = 0;
 			}
 
 			if (event.isNoteOff()) {
@@ -79,6 +87,9 @@ namespace apryx {
 		// Play the current voices
 		for (auto &voice : m_Voices) {
 
+			if (!voice.enabled)
+				continue;
+
 			for (int i = 0; i < values.size() / format.channels; i++) {
 
 				double volume = 0;
@@ -105,7 +116,12 @@ namespace apryx {
 					volume = m_EnvelopeSustain;
 				}
 				if (voice.envelopePhase == MidiVoice::Release) {
-					volume = audioLerp(voice.volume, 0, voice.envelopeTimer / m_EnvelopeRelease);				
+					volume = audioLerp(voice.volume, 0, pow(voice.envelopeTimer / m_EnvelopeRelease, 0.5));
+
+					if (voice.envelopeTimer > m_EnvelopeRelease) {
+						voice.enabled = false;
+						break;
+					}
 				}
 
 				// Prevent clicking when releasing before sustain.
@@ -119,17 +135,12 @@ namespace apryx {
 				double gain = volume * m_Volume * toGain(-(1 - voice.velocity) * 30);
 				double value = apryx::audioSawtooth(voice.wavePhase) * gain;
 
-				/*value = (
+				value = (
 					apryx::audioSine(voice.wavePhase) + 
 					apryx::audioSine(voice.wavePhase*1.99) + 
 					apryx::audioSine(voice.wavePhase*3) + 
 					apryx::audioSine(voice.wavePhase*4)
-					) * 0.5 * gain;*/
-				value = (
-					apryx::audioSawtooth(voice.wavePhase) +
-					apryx::audioSawtooth(voice.wavePhase* pow(2, (1 - m_Detune))) +
-					apryx::audioSawtooth(voice.wavePhase* pow(2, (1 + m_Detune)))
-					) / 3.0 * gain;
+					) * 0.5 * gain;
 
 				// Write the values
 				for (int j = 0; j < format.channels; j++)
@@ -151,14 +162,14 @@ namespace apryx {
 			double value = values[i * format.channels];
 
 			value = filter.process(value);
-			//value = delay.process(value);
+			//value = delay1.process(value);
 
 			for (int j = 0; j < format.channels; j++)
 				values[i * format.channels + j] = value;
 		}
 	
 
-		m_Voices.erase(std::remove_if(m_Voices.begin(),
+		/*m_Voices.erase(std::remove_if(m_Voices.begin(),
 			m_Voices.end(),
 			[this](auto &voice) {
 				if (voice.envelopePhase == MidiVoice::Release && voice.envelopeTimer > m_EnvelopeRelease) {
@@ -166,8 +177,8 @@ namespace apryx {
 				}
 				return false; 
 			}),
-			m_Voices.end());
+			m_Voices.end());*/
 
-		return m_Voices.size() > 0;
+		return true;// m_Voices.size() > 0;
 	}
 }

@@ -14,6 +14,9 @@ namespace apryx {
 		AudioFormat m_AudioFormat;
 
 		std::shared_ptr<PCMSource> m_Source;
+
+	public:// SHOULD NOT BE PUBLIC, TODO FIX
+		std::vector<double> m_Buffer;
 	public:
 		AudioSystem();
 		~AudioSystem();

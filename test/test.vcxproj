@@ -126,15 +126,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CombEffect.cpp" />
+    <ClCompile Include="iir\Grainer.cpp" />
     <ClCompile Include="iir\IIRFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="midi.cpp" />
     <ClCompile Include="MidiSource.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CombEffect.h" />
+    <ClInclude Include="iir\Grainer.h" />
     <ClInclude Include="iir\IIRDelay.h" />
     <ClInclude Include="iir\IIRFilter.h" />
     <ClInclude Include="MidiSource.h" />
+    <ClInclude Include="Wavetable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

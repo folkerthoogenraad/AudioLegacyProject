@@ -12,9 +12,9 @@ namespace apryx {
 
 		float m_Feedback = 0.5f;
 	public:
-		PCMDelay();
+		PCMDelay(size_t samples = 500, float feedback = 0.5f);
 
-		// Sets the amount of samples for the delay. 
+		// Sets the amount of samples for the delay1. 
 		// This should always be a multiple of the amount of channels
 		// Use AudioUtils::toSamples
 		void setDelaySamples(size_t samples);

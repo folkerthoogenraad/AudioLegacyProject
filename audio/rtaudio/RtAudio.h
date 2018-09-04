@@ -549,7 +549,7 @@ class RtAudio
 
   //! Returns the internal stream latency in sample frames.
   /*!
-    The stream latency refers to delay in audio input and/or output
+    The stream latency refers to delay1 in audio input and/or output
     caused by internal buffering by the audio system and/or hardware.
     For duplex streams, the returned value will represent the sum of
     the input and output latencies.  If a stream is not open, an

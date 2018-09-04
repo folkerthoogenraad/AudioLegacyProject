@@ -585,7 +585,7 @@ ASIOError ASIOGetLatencies(long *inputLatency, long *outputLatency);
 	  inputLatency will hold the 'age' of the first sample frame
 	  in the input buffer when the hosts reads it in bufferSwitch()
 	  (this is theoretical, meaning it does not include the overhead
-	  and delay between the actual physical switch, and the time
+	  and delay1 between the actual physical switch, and the time
 	  when bufferSitch() enters).
 	  This will usually be the size of one block in sample frames, plus
 	  device specific latencies.

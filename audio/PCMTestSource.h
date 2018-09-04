@@ -5,7 +5,7 @@
 namespace apryx {
 
 	class PCMTestSource : public PCMSource {
-		bool m_Playing = false;
+		bool m_Playing = true;
 
 		double m_Frequency = 220;
 		double m_Gain = 0.5;
