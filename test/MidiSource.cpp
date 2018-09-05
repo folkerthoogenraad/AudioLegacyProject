@@ -140,7 +140,7 @@ namespace apryx {
 					apryx::audioSine(voice.wavePhase*1.99) + 
 					apryx::audioSine(voice.wavePhase*3) + 
 					apryx::audioSine(voice.wavePhase*4)
-					) * 0.5 * gain;
+					) * gain;
 
 				// Write the values
 				for (int j = 0; j < format.channels; j++)

@@ -63,7 +63,7 @@ namespace apryx {
 	}
 
 	AudioSystem::AudioSystem()
-		:m_Dac(RtAudio(RtAudio::Api::WINDOWS_ASIO))
+		:m_Dac(RtAudio(RtAudio::Api::WINDOWS_WASAPI))
 	{ }
 
 	AudioSystem::~AudioSystem()
